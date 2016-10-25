@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  company_id: 
+  start_date: 2016-10-25 21:56:33
+  end_date: 2016-10-25 21:56:33
+  item_price: 1.5
+  address: MyText
+
+two:
+  company_id: 
+  start_date: 2016-10-25 21:56:33
+  end_date: 2016-10-25 21:56:33
+  item_price: 1.5
+  address: MyText
