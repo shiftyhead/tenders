@@ -1,0 +1,66 @@
+.x-settings
+  .x-settings__title Персональные настройки компании
+  form#loginform.x-form
+    .x-form__wrapper
+      .x-form__group
+        .x-form__field-group
+          label.x-form__label Название компании*
+          .x-form__field-multi
+            input.x-form__field name="companyName" placeholder="OOO «Моя Компания»"
+        .x-form__title Производимая продукция:
+        .x-form__field-group
+          label.x-form__label Наименование*
+          .x-form__field-multi
+            input.x-form__field name="productName" placeholder="Введите слова), характеризующие Ваш продукт"
+            span.x-form__field-hint
+              | Пример: &nbsp;
+              span гайка
+        .x-form__field-group
+          label.x-form__label Исключить из поиска
+          .x-form__field-multi
+            input.x-form__field placeholder="Cлова, которые будут исключены из поиска"
+            span.x-form__field-hint
+              | Пример: &nbsp;
+              span фурнитура
+      .x-form__group
+        .x-form__field-group
+          label.x-form__label Регион*
+          .x-form__field-multi
+            .x-form__field-wrapper data-value="0"
+              .x-form__field-inner
+                input.x-form__field.js-autocomplete name="regionName[]" placeholder="Самарская обл."
+              .x-form__field-button.x-form__field-button--add.js-add
+        .x-form__field-group
+          label.x-form__label Тип процедуры
+          .x-form__select-wrapper
+            select.x-form__select
+              option Все
+              option Аукцион
+              option Конкурентный лист
+              option Открытый конкурентный лист
+              option Запрос котировок
+              option Запрос предложений
+              option Запрос предложений с переторжкой
+            .x-form__select-control
+              .x-form__select-corner
+        .x-form__field-group
+          label.x-form__label Статус
+          .x-form__select-wrapper
+            select.x-form__select
+              option Все
+              option Опубликованные
+              option Прошедшие
+            .x-form__select-control
+              .x-form__select-corner
+        .x-form__field-group
+          label.x-form__label Искать тендеры с:*
+          .x-form__date
+            input#date_timepicker_start.x-form__field name="dateFrom" placeholder="__/__/____"
+          label.x-form__label по:*
+          .x-form__date
+            input#date_timepicker_end.x-form__field name="dateTo" placeholder="__/__/____"
+    button.x-form__button type="submit"  Поиск
+.h-hexagon__position
+  .x-hexagon.x-hexagon--wrapper.js-toggle
+    .x-hexagon.x-hexagon--inner
+    .x-hexagon__corners

@@ -8,3 +8,37 @@ html
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   body
     = yield
+    .x-wrapper
+      .x-wrapper__inner
+        include
+        include
+        .x-step
+          .x-chart.x-chart--wide
+            h2.x-chart__title.h-margin-bottom Распределение подходящих тендеров, открытых компанией ОАО Новокуйбышевский НПЗ за период с 01.01.2016 по 20.08.2016
+            table.x-table.y-table align="center"
+              tr
+                td.y-table__cell style=("width: 40%; vertical-align: middle; position: relative; left:-9px;padding-right: 20px;")
+                  #table_div.table_div style=("width: 103%;")
+                td.y-table__cell style=("width: 60%; vertical-align: middle; position: relative; right:-9px;")
+                  #bubble_div.bubble_div
+            .x-lots
+              h2.x-lots__title Лоты тендера № 135677 “Закупка крепежных изделий”
+              .x-lots__wrapper
+                .x-lots__block.x-lots__block--small
+                  ul.x-lots__list
+                    li.x-lots__item.is-active Шпилька ГОСТ 9065-75
+                    li.x-lots__item.is-active Гайка М12
+                    li.x-lots__item Втулка РК-75 НГ
+                .x-lots__block.x-lots__block--big
+                  #progress.x-lots__part
+                  .x-lots__block.x-lots__block--big Позиций совпадает с продукцией вашей компании
+          .x-chart.x-chart--wide
+            h2.x-chart__title.h-margin-bottom Распредление отобранных тендеров между организаторами 20.08.2016
+            table
+              tr
+                td style=("width: 40%; vertical-align: middle;")
+                  #table-for-piechart.table_div
+                td style=("width: 60%; vertical-align: middle;")
+                  #piechartTwo style=("width: 90%; height: 300px")
+        .x-footer
+          .x-logo

@@ -1,0 +1,158 @@
+.x-
+  &form
+    display: flex
+    flex-direction: column
+    &__select
+      border-radius: 5px
+      &-wrapper
+        position: relative
+        width: 64%
+        border-radius: 5px
+        &:hover
+          box-shadow: 0px 0px 3px #d9dada
+        select
+          width: 100%
+          height: 25px
+          padding: 0 20px 0 7px
+          background-color: #fff
+          border: 0
+          font-size: 14px
+          &::-ms-expand
+            display: none
+      &-control
+        position: absolute
+        width: 20px
+        height: 25px
+        background-color: #77c9d7
+        right: 0
+        bottom: 0
+        pointer-events: none
+        border-radius: 5px
+      &-corner
+        &::after, &::before
+          content: ''
+          border: solid transparent
+          position: absolute
+          left: 50%
+          margin-left: -7px
+          bottom: 0
+          width: 0
+        &::before
+          border-top-color: #fff
+          border-width: 7px
+        &::after
+          border-top-color: #77c9d7
+          border-width: 10px
+          margin-left: -10px
+    &__wrapper
+      display: flex
+      justify-content: space-between
+      margin-bottom: 20px
+    &__button
+      color: #fff
+      background-color: #77c9d7
+      font-size: 20px
+      height: 45px
+      border: 2px solid #fff
+      border-radius: 3px
+      padding: 0 30px
+      align-self: center
+      font-family: 'OpenSans'
+      font-weight: 300
+      &:hover
+        background-color: #63abb7
+    &__title
+      margin-bottom: 10px
+    &__group
+      display: flex
+      flex-direction: column
+      width: 50%
+      // justify-content: space-between
+    &__field-group
+      display: flex
+      justify-content: flex-end
+      align-items: baseline
+      margin-bottom: 15px
+    &__label
+      margin-right: 10px
+      margin-left: 5px
+      text-align: right
+    &__field
+      min-width: 60%
+      height: 25px
+      border-radius: 5px
+      padding: 0 10px
+      font-size: 14px
+      font-weight: 300
+      margin-bottom: 5px
+      &:hover, &:focus
+        box-shadow: 0px 0px 3px #d9dada
+      &-hint
+        font-size: 12px
+        font-style: italic
+        color: #fff
+        span
+          color: #353535
+      &-multi
+        display: flex
+        flex-direction: column
+        width: 64%
+        .form__field-wrapper
+          width: 100%
+        span
+          align-self: center
+      &-wrapper
+        display: flex
+        justify-content: space-between
+        & + &
+          margin-top: 10px
+        input
+          width: 93%
+      &-inner
+        display: flex
+        flex-direction: column
+        width: 100%
+      &-button
+        min-width: 26px
+        height: 26px
+        margin-left: 5px
+        background-color: #77c9d7
+        border-radius: 50%
+        border: 2px solid #fff
+        position: relative
+        &:hover
+          cursor: pointer
+        &--add
+          &:hover
+            background-color: #63abb7
+          &::before, &::after
+            content: ''
+            position: absolute
+            background-color: #fff
+            top: 50%
+            left: 50%
+            transform: translate(-50%, -50%)
+          &::before
+            width: 12px
+            height: 3px
+          &::after
+            height: 12px
+            width: 3px
+        &--remove
+          background-color: #e05454
+          &:hover
+            background-color: #b14242
+          &::before
+            content: ''
+            position: absolute
+            background-color: #fff
+            top: 50%
+            left: 50%
+            transform: translate(-50%, -50%)
+            width: 12px
+            height: 3px
+    &__date
+      display: flex
+      justify-content: flex-start
+      flex-direction: column
+      width: 20%

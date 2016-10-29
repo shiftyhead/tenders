@@ -1,0 +1,53 @@
+.x-
+  &lots
+    width: 70%
+    background-color: #d9dada
+    margin: 0 auto
+    border-radius: 4px
+    padding: 30px
+    &__title
+      font-size: 18px
+      text-align: center
+      margin-bottom: 25px
+    &__list
+      margin-right: 10px
+    &__item
+      padding: 5px
+      font-size: 14px
+      border: 2px solid #fff
+      border-radius: 4px
+      margin-bottom: 5px
+      &.is-active
+        background-color: '#77c9d'
+    &__wrapper
+      display: flex
+      justify-content: space-between
+    &__block
+      font-size: 14px
+      &--small
+        width: 40%
+      &--big
+        width: 59%
+        display: flex
+        align-items: center
+        justify-content: flex-end
+    &__part
+      position: relative
+      margin-right: 25px
+      &::before
+        content: attr(data-content)
+        display: inline-block
+        width: 55px
+        height: 55px
+        background-color: '#77c9d'
+        border-radius: 50%
+        position: absolute
+        left: 50%
+        top: 50%
+        transform: translate(-50%, -50%)
+        border: 2px solid #fff
+        color: #fff
+        text-align: center
+        line-height: 55px
+    &__description
+      width: 50%

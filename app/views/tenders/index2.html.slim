@@ -1,0 +1,27 @@
+.x-wrapper
+  .x-wrapper__inner
+    = render 'tenders/logo'
+    = render 'tenders/settings'
+    .x-step
+      .x-chart
+        h2.x-chart__title
+          | Всего найдено
+          = succeed "\u{43f}\u{43e}\u{434}\u{445}\u{43e}\u{434}\u{44f}\u{449}\u{438}\u{445}" do
+            span.x-chart__accent 1024 &nbsp;
+          | тендеров за период с 01.01.2016 по 20.08.2016
+        .x-chart__wrapper
+          #myPieChart style=("width: 80%; height: 400px")
+          .x-legend
+            ul.x-legend__list
+      .x-chart.x-chart--wide
+        h2.x-chart__title.h-margin-bottom Распределение тендеров подходящих ООО "Рога" за период с 01.01.2016 по 20.08.2016
+        table.y-table align="center"
+          tr
+            td.y-table__cell style=("width: 40%; vertical-align: middle; position: relative; left:-9px;padding-right: 20px;")
+              #table_div.table_div style=("width: 103%;")
+            td.y-table__cell style=("width: 60%; vertical-align: middle; position: relative; right:-9px;")
+              #bubble_div.bubble_div
+        #make-choice.make-choice Выберете интересующий тендер из таблицы
+        button#go-next.x-form__button onclick="window.location.href='./index3.html'"  Далее
+    .x-footer
+      .x-logo

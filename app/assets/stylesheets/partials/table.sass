@@ -1,0 +1,52 @@
+.x-
+  &table
+    margin-bottom: 30px
+    &__head
+      background-color: #ececec
+    &__head-cell
+      background-color: #ececec
+    &__row
+      &.is-active
+        background-color: rgba(#e05454, .5)
+      &--hover
+        background-color: rgba(#77c9d7, .5)
+        cursor: pointer
+    &__cell
+      vertical-align: middle
+
+.google-visualization-table-table
+  th, td
+    border-width: 0 2px 2px 0 !important
+    border-color: #d9dada !important
+    &:last-child
+      border-right: none !important
+  tr:last-child
+    td
+      border-bottom: none !important
+.google-visualization-table-tr-sel
+  background-color: #77c9d7 !important
+
+.table_div, .bubble_div
+  padding: 1px
+  border: 2px solid #d9dada
+  border-radius: 4px
+
+.y-table
+  margin-bottom: 20px
+.make-choice
+  text-align: center
+.go-next
+  display: inline-block
+
+@media screen and (max-width: 700px)
+  .y-table
+    display: flex
+    flex-direction: column-reverse
+    &__cell
+      display: block
+      min-width: 90%
+      margin: 0 auto
+      padding-left: 20px
+      & + &
+        margin-top: 20px
+        padding-left: 0
