@@ -52,6 +52,10 @@ set :unicorn_pid, -> { File.join(shared_path, 'pids', 'unicorn.pid') }
 
 namespace :deploy do
 
+  task :assets do
+    execute 'bundle exec gulp'
+  end
+
   task :start do
     invoke 'deploy:set_rails_env'
     invoke 'unicorn:start'
@@ -70,6 +74,7 @@ namespace :deploy do
     invoke 'deploy:start'
   end
 
+  after "deploy:updated", "deploy:assets"
   after 'deploy:publishing', 'deploy:restart'
   # after :restart, :clear_cache do
   #   on roles(:web), in: :groups, limit: 3, wait: 10 do

@@ -1,0 +1,10 @@
+.x-logo {
+  width: 87px;
+  height: 21px;
+  margin-left: 20px;
+  margin-bottom: 10px;
+  background-image: svg-load("../images/logo.svg", fill=#fff);
+  background-repeat: no-repeat;
+  background-size: contain; }
+
+/*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicGFydGlhbHMvbG9nby5jc3MiLCJzb3VyY2VzIjpbInBhcnRpYWxzL2xvZ28uc2FzcyJdLCJzb3VyY2VzQ29udGVudCI6WyIueC0ge1xuICAmbG9nbyB7XG4gICAgd2lkdGg6IDg3cHg7XG4gICAgaGVpZ2h0OiAyMXB4O1xuICAgIG1hcmdpbi1sZWZ0OiAyMHB4O1xuICAgIG1hcmdpbi1ib3R0b206IDEwcHg7XG4gICAgYmFja2dyb3VuZC1pbWFnZTogc3ZnLWxvYWQoJy4uL2ltYWdlcy9sb2dvLnN2ZycsIGZpbGw9I2ZmZik7XG4gICAgYmFja2dyb3VuZC1yZXBlYXQ6IG5vLXJlcGVhdDtcbiAgICBiYWNrZ3JvdW5kLXNpemU6IGNvbnRhaW47IH0gfVxuIl0sIm1hcHBpbmdzIjoiQUFBQSxBQUFBLE9BQUcsQ0FDSztFQUNKLEtBQUssRUFBRSxJQUFLO0VBQ1osTUFBTSxFQUFFLElBQUs7RUFDYixXQUFXLEVBQUUsSUFBSztFQUNsQixhQUFhLEVBQUUsSUFBSztFQUNwQixnQkFBZ0IsRUFBRSx5Q0FBUTtFQUMxQixpQkFBaUIsRUFBRSxTQUFVO0VBQzdCLGVBQWUsRUFBRSxPQUFRLEdBQUciLCJuYW1lcyI6W119 */
