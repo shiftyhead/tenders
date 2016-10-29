@@ -10,8 +10,6 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
-//= require jquery_ujs
 //= require 3rd-party/jquery/jquery-3.1.0.min.js
 //= require 3rd-party/jquery/jquery-ui-1.8.min.js
 //= require 3rd-party/jqueryvalidate/jquery.validate.js
@@ -191,14 +189,7 @@ function drawBubbleChart() {
   var optionsTable = {
     showRowNumber: false,
     height: '300px',
-    {
-      tableRow: 'x-table__row',
-      hoverTableRow: 'x-table__row--hover',
-      tableCell: 'x-table__cell',
-      headerCell: 'x-table__head-cell',
-      headerRow: 'x-table__head',
-      oddTableRow: 'x-table__row'
-    }
+    cssClassNames
   }
 
   var table = new google.visualization.Table(document.getElementById('table_div'));

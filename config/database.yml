@@ -80,6 +80,5 @@ test:
 #
 production:
   <<: *default
-  database: sh_production
-  username: sh
-  password: <%= ENV['SH_DATABASE_PASSWORD'] %>
+  database: sh_development
+

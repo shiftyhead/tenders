@@ -74,7 +74,7 @@ namespace :deploy do
     invoke 'deploy:start'
   end
 
-  after "deploy:updated", "deploy:assets"
+  # after "deploy:updated", "deploy:assets"
   after 'deploy:publishing', 'deploy:restart'
   # after :restart, :clear_cache do
   #   on roles(:web), in: :groups, limit: 3, wait: 10 do
