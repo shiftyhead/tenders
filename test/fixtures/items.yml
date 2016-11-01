@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tender: one
+  content: MyText
+  quantity: MyText
+  price_one: MyText
+  price_all: MyText
+
+two:
+  tender: two
+  content: MyText
+  quantity: MyText
+  price_one: MyText
+  price_all: MyText

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161025191832) do
+ActiveRecord::Schema.define(version: 20161031185229) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,18 @@ ActiveRecord::Schema.define(version: 20161025191832) do
     t.string   "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text     "region_id"
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.integer  "tender_id"
+    t.text     "content"
+    t.text     "quantity"
+    t.text     "price_one"
+    t.text     "price_all"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tender_id"], name: "index_items_on_tender_id", using: :btree
   end
 
   create_table "tenders", force: :cascade do |t|
@@ -29,9 +41,14 @@ ActiveRecord::Schema.define(version: 20161025191832) do
     t.datetime "end_date"
     t.float    "item_price"
     t.text     "address"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "status"
+    t.integer  "region"
+    t.bigint   "item_count"
+    t.bigint   "items_count"
     t.index ["company_id"], name: "index_tenders_on_company_id", using: :btree
   end
 
+  add_foreign_key "items", "tenders"
 end

@@ -1,7 +1,9 @@
 require 'date'
 class TendersController < ApplicationController
   def index
+
     if check_filter_request
+
       @tenders = Tender.pg_search(params[:query]) if params[:query].present?
       if params[:start_date].present?
         @tenders = Tender.where(id: @tenders.pluck(:id)).where('start_date >= ?', params[:start_date].to_datetime) if @tenders.present?

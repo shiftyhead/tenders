@@ -1,6 +1,6 @@
 .x-settings
   .x-settings__title Персональные настройки компании
-  form#loginform.x-form
+  = form_for '', method: :get, input_html: {class: 'x-form', id: 'loginform'} do
     .x-form__wrapper
       .x-form__group
         .x-form__field-group

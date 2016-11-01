@@ -42,6 +42,10 @@ gulp.task('compile-sass', function() {
       .pipe(gulp.dest('public/assets'));
 });
 
+gulp.task("images", function() {
+  return gulp.src("images/**/*").pipe(gulp.dest("../public/assets/images/")).pipe(liveReload());
+});
+
 gulp.task('compile-scss', function() {
   gulp.src('app/assets/stylesheets/**/*.scss')
       .pipe(sourceMaps.init())
