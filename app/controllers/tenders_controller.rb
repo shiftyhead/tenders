@@ -5,6 +5,9 @@ class TendersController < ApplicationController
       @tenders = Tender.where('start_date >= ?', params[:dateFrom].to_datetime)
       @tenders = Tender.where(id: @tenders.pluck(:id)).where('end_date <= ?', params[:dateTo].to_datetime)
       @tenders = Tender.where(id: @tenders.pluck(:id)).where(region: params['regionName'])
+      @tenders = Tender.where(id: @tenders.pluck(:id)).where(category: params['tender_category']) if params[:tender_category].present?
+      @tenders = Tender.where(id: @tenders.pluck(:id)).where(status: params['tender_status']) if params[:tender_status].present?
+
       @tender_ids = @tenders.pluck(:id)
       @needed_ids = Item.where(tender_id: @tender_ids).pg_search(params[:productName]).pluck(:tender_id)
       if params[:stopName].present?
