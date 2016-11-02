@@ -1,0 +1,39 @@
+- if params[:dateFrom].present?
+  javascript:
+    $(function(){
+      $('input[name=companyName]').val("#{params[:companyName]}");
+      $('input[name=dateFrom]').val("#{params[:dateFrom]}");
+      $('input[name=dateTo]').val("#{params[:dateTo]}");
+      $('input[name=productName]').val("#{params[:productName]}");
+      console.log("#{params[:regionName]}");
+    });
+- if params[:regionName].present?
+  -if params[:regionName].count == 1
+    javascript:
+      $(function(){
+        $('input[name="regionName[]"]').val("#{params[:regionName][0].to_s}")
+      });
+  -else
+    - params[:regionName].each_with_index do |param, index|
+      javascript:
+        $(function(){
+          $('input[name="regionName[]"]:last').val("#{param}")
+          if("true" == "#{params[:regionName].count != (index +1)}"){
+            $('.js-add').click();
+          }
+        });
+- if params[:stopName].present?
+  javascript:
+    $(function(){
+      $('input[name="stopName"]').val("#{params[:stopName]}");
+    });
+- if params[:tender_category].present?
+  javascript:
+    $(function(){
+      $('select[name="[tender_category]"] option[value="#{params[:tender_category]}"]').attr("selected", "selected");
+    });
+- if params[:tender_status].present?
+  javascript:
+    $(function(){
+      $('select[name="[tender_status]"] option[value="#{params[:tender_status]}"]').attr("selected", "selected");
+    });

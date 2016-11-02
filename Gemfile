@@ -17,6 +17,7 @@ gem 'bootstrap3-datetimepicker-rails', '~> 4.17.42'
 gem 'slim-rails'
 gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
+gem 'gon', '~> 6.0', '>= 6.0.1'
 gem 'jbuilder', '~> 2.5'
 
 group :development, :test do

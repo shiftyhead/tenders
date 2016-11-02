@@ -3,4 +3,30 @@
     = render  'shared/logo'
     = render  'shared/settings'
     = render  'shared/step1'
+    h3 found #{@tenders.count}
+    ul
+      - @tenders.each do |t|
+        li
+          'TENDER:
+          |
+          br
+          = t.name
+          |   | status:
+          = t.status
+          |   | region:
+          = t.region
+          |   | category:
+          = t.category
+          p
+            'items
+            |
+            br/
+            |
+            - t.items.each do |i|
+              p
+                'content
+                |
+                = i.content
+                br
+                br
     = render  'shared/footer'

@@ -1,19 +1,17 @@
 require 'date'
 class TendersController < ApplicationController
   def index
-
-    if check_filter_request
-
-      @tenders = Tender.pg_search(params[:query]) if params[:query].present?
-      if params[:start_date].present?
-        @tenders = Tender.where(id: @tenders.pluck(:id)).where('start_date >= ?', params[:start_date].to_datetime) if @tenders.present?
+    if params[:regionName].present?
+      @tenders = Tender.where('start_date >= ?', params[:dateFrom].to_datetime)
+      @tenders = Tender.where(id: @tenders.pluck(:id)).where('end_date <= ?', params[:dateTo].to_datetime)
+      @tenders = Tender.where(id: @tenders.pluck(:id)).where(region: params['regionName'])
+      @tender_ids = @tenders.pluck(:id)
+      @needed_ids = Item.where(tender_id: @tender_ids).pg_search(params[:productName]).pluck(:tender_id)
+      if params[:stopName].present?
+        @not_need_ids = Item.where(tender_id: @tender_ids).pg_search(params[:stopName]).pluck(:tender_id)
+        @tenders = @tenders.where(id: @needed_ids.reject{|x| @not_need_ids.include? x }.uniq)
       else
-        @tenders = Tender.where('start_date >= ?', params[:start_date].to_datetime)
-      end
-      if params[:end_date].present?
-        @tenders = Tender.where(id: @tenders.pluck(:id)).where('end_date <= ?', params[:end_date].to_datetime) if @tenders.present?
-      else
-        @tenders = Tender.where('end_date <= ?', params[:end_date].to_datetime)
+        @tenders = @tenders.where(id: @needed_ids.uniq)
       end
     else
       @tenders = Tender.all.order(created_at: :desc)

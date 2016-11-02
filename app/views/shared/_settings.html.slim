@@ -1,6 +1,6 @@
 .x-settings
   .x-settings__title Персональные настройки компании
-  = form_for '', method: :get, input_html: {class: 'x-form', id: 'loginform'} do
+  = form_for '', method: :get, html: {class: 'x-form', id: 'loginform'} do |f|
     .x-form__wrapper
       .x-form__group
         .x-form__field-group
@@ -18,7 +18,7 @@
         .x-form__field-group
           label.x-form__label Исключить из поиска
           .x-form__field-multi
-            input.x-form__field placeholder="Cлова, которые будут исключены из поиска"
+            input.x-form__field name="stopName" placeholder="Cлова, которые будут исключены из поиска"
             span.x-form__field-hint
               | Пример: &nbsp;
               span фурнитура
@@ -33,23 +33,13 @@
         .x-form__field-group
           label.x-form__label Тип процедуры
           .x-form__select-wrapper
-            select.x-form__select
-              option Все
-              option Аукцион
-              option Конкурентный лист
-              option Открытый конкурентный лист
-              option Запрос котировок
-              option Запрос предложений
-              option Запрос предложений с переторжкой
+            = f.select "tender_category", [ 'Все', 'Аукцион', 'Конкурентный лист', 'Открытый конкурентный лист', 'Запрос котировок', 'Запрос предложений', 'Запрос предложений с переторжкой'], {}, {class: 'x-form__select'}
             .x-form__select-control
               .x-form__select-corner
         .x-form__field-group
           label.x-form__label Статус
           .x-form__select-wrapper
-            select.x-form__select
-              option Все
-              option Опубликованные
-              option Прошедшие
+            = f.select "tender_status", ['Все', 'Опубликованные', 'Прошедшие'], {}, {class: 'x-form__select'}
             .x-form__select-control
               .x-form__select-corner
         .x-form__field-group
@@ -64,3 +54,5 @@
   .x-hexagon.x-hexagon--wrapper.js-toggle
     .x-hexagon.x-hexagon--inner
     .x-hexagon__corners
+
+= render 'shared/form_support'
