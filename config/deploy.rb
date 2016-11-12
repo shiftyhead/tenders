@@ -2,7 +2,7 @@
 lock '3.5.0'
 
 set :application, 'tenders'
-set :repo_url, 'git@github.com:som4ik/tenders-job.git'
+set :repo_url, 'git@github.com:som4ik/tenders.git'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
