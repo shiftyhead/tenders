@@ -121,156 +121,7 @@ function autocompleteRegion() {
   })
 }
 
-function drawBubbleChart() {
 
-  var dataForTable = new google.visualization.DataTable();
-  dataForTable.addColumn('number', '№');
-  dataForTable.addColumn('string', 'Название процедуры');
-  dataForTable.addColumn('string', 'Вес*');
-  dataForTable.addColumn('string', 'Тип');
-  dataForTable.addColumn('string', 'Организатор');
-  dataForTable.addColumn('date', 'Опубликовано');
-  dataForTable.addColumn('date', 'Актуально до');
-  dataForTable.addColumn('number', 'Цена, руб.');
-
-  dataForTable.addRows([
-    [135677, 'Закупка крепежных изделий', '75%', 'Аукцион', 'Новокуйбышевс', new Date(2016, 6, 5), new Date(2016, 7, 8), 3000000],
-    [134568, 'Гайка на 2017 г.', '53 %', 'Запрос цен', 'Борхиммаш ООО', new Date(2016, 5, 17), new Date(2016, 6, 12), 2500500],
-    [135677, 'Закупка крепежных изделий', '75%', 'Аукцион', 'Новокуйбышевс', new Date(2016, 6, 5), new Date(2016, 7, 8), 3000000],
-    [134568, 'Гайка на 2017 г.', '53 %', 'Запрос цен', 'Борхиммаш ООО', new Date(2016, 5, 17), new Date(2016, 6, 12), 2500500],
-    [135677, 'Закупка крепежных изделий', '75%', 'Аукцион', 'Новокуйбышевс', new Date(2016, 6, 5), new Date(2016, 7, 8), 3000000],
-    [134568, 'Гайка на 2017 г.', '53 %', 'Запрос цен', 'Борхиммаш ООО', new Date(2016, 5, 17), new Date(2016, 6, 12), 2500500],
-    [135677, 'Закупка крепежных изделий', '75%', 'Аукцион', 'Новокуйбышевс', new Date(2016, 6, 5), new Date(2016, 7, 8), 3000000],
-    [134568, 'Гайка на 2017 г.', '53 %', 'Запрос цен', 'Борхиммаш ООО', new Date(2016, 5, 17), new Date(2016, 6, 12), 2500500],
-    [135677, 'Закупка крепежных изделий', '75%', 'Аукцион', 'Новокуйбышевс', new Date(2016, 6, 5), new Date(2016, 7, 8), 3000000],
-    [134568, 'Гайка на 2017 г.', '53 %', 'Запрос цен', 'Борхиммаш ООО', new Date(2016, 5, 17), new Date(2016, 6, 12), 2500500]
-  ]);
-
-  var dataForBubble = google.visualization.arrayToDataTable([
-    ['ID', 'Дата', 'Сумма', 'Процедура', 'Доля'],
-    ['135677', new Date(2016, 6, 5), 3000000, 'Закупка крепежных изделий', 75],
-    ['134568', new Date(2016, 5, 17), 2500500, 'Запрос цен', 53],
-    ['134569', new Date(2016, 4, 13), 1000500, 'Запрос цен', 14],
-    ['135677', new Date(2015, 6, 5), 3000000, 'Закупка крепежных изделий', 75],
-    ['134568', new Date(2015, 5, 17), 2500500, 'Запрос цен', 53],
-    ['134569', new Date(2015, 4, 13), 1000500, 'Запрос цен', 14],
-    ['135677', new Date(2014, 6, 5), 3000000, 'Закупка крепежных изделий', 75],
-    ['134568', new Date(2014, 5, 17), 2500500, 'Запрос цен', 53],
-    ['134569', new Date(2014, 4, 13), 1000500, 'Запрос цен', 14],
-    ['134569', new Date(2013, 4, 13), 1000500, 'Запрос цен', 14]
-
-  ])
-
-  var optionsBubble = {
-    hAxis: {
-      title: 'Дата, дни',
-      format: 'MMM'
-    },
-    vAxis: { title: 'Цена контракта, млн. руб.', },
-    bubble: {
-      textStyle: {
-        fontSize: 11
-      }
-    },
-    colorAxis: { colors: ['yellow', 'red'], },
-    legend: { position: 'none', },
-    chartArea: { left: 50, top: 10, width: '80%', height: '80%' }
-  };
-
-  var cssClassNames = {
-    tableRow: 'x-table__row',
-    hoverTableRow: 'x-table__row--hover',
-    tableCell: 'x-table__cell',
-    headerCell: 'x-table__head-cell',
-    headerRow: 'x-table__head',
-    oddTableRow: 'x-table__row'
-  }
-
-  var optionsTable = {
-    showRowNumber: false,
-    height: '300px',
-    cssClassNames
-  }
-
-  var table = new google.visualization.Table(document.getElementById('table_div'));
-  table.draw(dataForTable, optionsTable);
-
-  var bubble = new google.visualization.BubbleChart(document.getElementById('bubble_div'));
-  bubble.draw(dataForBubble, optionsBubble);
-
-  var rows = [].slice.call(document.querySelectorAll('.x-table__row'));
-
-  if (window.location.pathname === '/index3.html') {
-    var rows = [].slice.call(document.querySelectorAll('.x-table__row'));
-    rows.forEach(function(item, index) {
-      if (index === 2) {
-        item.classList.add('is-active')
-      }
-    })
-  }
-
-  function checkChoice() {
-    $('#make-choice').hide()
-    $('#go-next').hide()
-
-    if (table.getSelection().length === 0) {
-      $('#make-choice').show()
-      $('#go-next').hide()
-    } else {
-      $('#make-choice').hide()
-      $('#go-next').show()
-    }
-  }
-
-  checkChoice()
-
-  google.visualization.events.addListener(table, 'select', function() {
-    bubble.setSelection(table.getSelection())
-    var currentRowIndex = table.getSelection()
-
-    // номер строки таблицы (индекс), по которой было совершено действие
-    if (currentRowIndex.length > 0) {
-      currentRowIndex = currentRowIndex[0].row
-    }
-
-    checkChoice()
-
-  });
-
-  google.visualization.events.addListener(bubble, 'select', function() {
-    table.setSelection(bubble.getSelection());
-  });
-}
-
-function circleProgressInit() {
-  var persentage = 67;
-
-  $('#progress').circleProgress({
-    value: persentage / 100,
-    size: 100,
-    fill: {color: "#fff"},
-    emptyFill: "#d9dada",
-    startAngle: 0,
-    thickness: 10,
-    lineCap: "round"
-  });
-  // Для отображения процентов внутри прогресс-бара
-  $('#progress').attr('data-content', persentage + '%');
-}
-
-function collapseSettings() {
-  var toggle = $('.js-toggle')
-  var height = $('.x-settings').outerHeight()
-  toggle.on('click', function() {
-    if ($('.x-hexagon__corners').hasClass('is-collapsed')){
-      $('.x-settings').css('height', '').css('overflow', '')
-      $('.x-hexagon__corners').removeClass('is-collapsed')
-    } else {
-      $('.x-settings').css('height', '80px').css('overflow', 'hidden')
-      $('.x-hexagon__corners').addClass('is-collapsed')
-    }
-  })
-}
 
 function datetimepickerInit() {
   // $.datetimepicker.setLocale('ru')
@@ -299,49 +150,49 @@ function datetimepickerInit() {
 
 //Переменные для круговой диаграммы и легенды
 //TODO: добавить нужные цвета
-var colorsPieOne = ['#f2cc2f', '#eb5655', '#7ec181', '#4099c6']
-var dataArrPieOne = [
-  {
-    name: 'Категория №1',
-    quantity: 174,
-    portion: '(от 75%-100% лотов из тендера соответсвует продукции вашей компании)'
-  },
-  {
-    name: 'Категория №2',
-    quantity: 133,
-    portion: '(от 75%-100% лотов из тендера соответсвует продукции вашей компании)'
-  },
-  {
-    name: 'Категория №3',
-    quantity: 307,
-    portion: '(от 75%-100% лотов из тендера соответсвует продукции вашей компании)'
-  },
-  {
-    name: 'Категория №4',
-    quantity: 410,
-    portion: '(от 75%-100% лотов из тендера соответсвует продукции вашей компании)'
-  }
-]
+// var colorsPieOne = ['#f2cc2f', '#eb5655', '#7ec181', '#4099c6']
+// var dataArrPieOne = [
+//   {
+//     name: 'Категория №1',
+//     quantity: 174,
+//     portion: '(от 75%-100% лотов из тендера соответсвует продукции вашей компании)'
+//   },
+//   {
+//     name: 'Категория №2',
+//     quantity: 133,
+//     portion: '(от 50%-75% лотов из тендера соответсвует продукции вашей компании)'
+//   },
+//   {
+//     name: 'Категория №3',
+//     quantity: 307,
+//     portion: '(от 25%-50% лотов из тендера соответсвует продукции вашей компании)'
+//   },
+//   {
+//     name: 'Категория №4',
+//     quantity: 410,
+//     portion: '(от 0%-25% лотов из тендера соответсвует продукции вашей компании)'
+//   }
+// ]
 
-function drawPieChart() {
-// Define the chart to be drawn.
-  var data = new google.visualization.DataTable()
-  var options = {
-          legend: 'none',
-          colors: colorsPieOne,
-        };
-  data.addColumn('string', 'Element')
-  data.addColumn('number', 'Percentage')
-  data.addRows([
-    ['Категория № 1', 174],
-    ['Категория № 2', 133],
-    ['Категория № 3', 307],
-    ['Категория № 4', 410]
-  ]);
-  // Instantiate and draw the chart.
-  var chart = new google.visualization.PieChart(document.getElementById('myPieChart'));
-  chart.draw(data, options);
-}
+// function drawPieChart() {
+// // Define the chart to be drawn.
+//   var data = new google.visualization.DataTable()
+//   var options = {
+//           legend: 'none',
+//           colors: colorsPieOne,
+//         };
+//   data.addColumn('string', 'Element')
+//   data.addColumn('number', 'Percentage')
+//   data.addRows([
+//     ['Категория № 1', 174],
+//     ['Категория № 2', 133],
+//     ['Категория № 3', 307],
+//     ['Категория № 4', 410]
+//   ]);
+//   // Instantiate and draw the chart.
+//   var chart = new google.visualization.PieChart(document.getElementById('myPieChart'));
+//   chart.draw(data, options);
+// }
 
 function drawLegend(arr, colors) {
   var myHTML = "";
@@ -379,24 +230,15 @@ function drawPieChartTwo() {
   };
   data.addColumn('string', 'Категория')
   data.addColumn('number', 'Доля')
-  data.addRows([
-    ['Борхиммаш ОАО', 15],
-    ['Новокуйбышевский НПЗ ОАО', 43],
-    ['Сибнефтегаз ОАО', 76]
-  ]);
+  data.addRows(gon.companies_with_tenders);
   // Instantiate and draw the chart.
 
   var dataForTable = new google.visualization.DataTable();
   dataForTable.addColumn('string', 'Наименование организации');
-  dataForTable.addColumn('string', 'Регион');
   dataForTable.addColumn('number', 'Всего тендеров');
   dataForTable.addColumn('number', 'Частота (тенд./мес.)');
 
-  dataForTable.addRows([
-    ['Борхиммаш ОАО', 'Воронежская обл.', 15, 0.9],
-    ['Новокуйбышевский НПЗ ОАО', 'Самарская обл.', 43, 3.6],
-    ['Сибнефтегаз ОАО', 'Ямало-Ненецкий АО', 76, 6.3]
-  ]);
+  dataForTable.addRows(gon.companies);
 
   var cssClassNames = {
     tableRow: 'x-table__row',
@@ -426,7 +268,139 @@ function drawPieChartTwo() {
   google.visualization.events.addListener(chart, 'select', function() {
     table.setSelection(chart.getSelection());
   });
+}
+function drawBubbleChart() {
 
+  var dataForTable = new google.visualization.DataTable();
+  dataForTable.addColumn('string', '№');
+  dataForTable.addColumn('string', 'Название процедуры');
+  dataForTable.addColumn('string', 'Вес*');
+  dataForTable.addColumn('string', 'Тип');
+  dataForTable.addColumn('string', 'Организатор');
+  dataForTable.addColumn('string', 'Опубликовано');
+  dataForTable.addColumn('string', 'Актуально до');
+  dataForTable.addColumn('string', 'Цена, руб.');
+  dataForTable.addRows(gon.tenders);
+  var i = 1;
+  var tenders_bubles = gon.tenders_bubles;
+  while(i < tenders_bubles.length){
+    tenders_bubles[i][1] = new Date(tenders_bubles[i][1])
+    i++
+  }
+  console.log(tenders_bubles);
+  var dataForBubble = google.visualization.arrayToDataTable(
+    tenders_bubles
+  )
+  // ['134569', new Date(2013, 4, 13), 1000500, 'Запрос цен', 14]
+
+  var optionsBubble = {
+    hAxis: {
+      title: 'Дата, дни',
+      format: 'M'
+    },
+    vAxis: { title: 'Цена контракта, млн. руб.', },
+    bubble: {
+      textStyle: {
+        fontSize: 11
+      }
+    },
+    colorAxis: { colors: ['yellow', 'red'], },
+    legend: { position: 'none', },
+    chartArea: { left: 50, top: 10, width: '80%', height: '80%' }
+  };
+
+  var cssClassNames = {
+    tableRow: 'x-table__row table_in',
+    hoverTableRow: 'x-table__row--hover',
+    tableCell: 'x-table__cell',
+    headerCell: 'x-table__head-cell',
+    headerRow: 'x-table__head',
+    oddTableRow: 'x-table__row'
+  }
+
+  var optionsTable = {
+    showRowNumber: false,
+    height: '300px',
+    cssClassNames
+  }
+
+  var table = new google.visualization.Table(document.getElementById('table_div'));
+  table.draw(dataForTable, optionsTable);
+
+  var bubble = new google.visualization.BubbleChart(document.getElementById('bubble_div'));
+  bubble.draw(dataForBubble, optionsBubble);
+
+  var rows = [].slice.call(document.querySelectorAll('.x-table__row'));
+
+  if (window.location.pathname === '/index3.html') {
+    var rows = [].slice.call(document.querySelectorAll('.x-table__row'));
+    rows.forEach(function(item, index) {
+      if (index === 2) {
+        item.classList.add('is-active')
+      }
+    })
+  }
+  $('.x-table__row').on('click', function(){
+    var id = $(this).find('.x-table__cell:first').html();
+    var vec = $(this).find('.x-table__cell:nth-child(3)').html();
+    $('#go-next').on('click', function(){
+      $.get(
+        "/tenders/tender_details",
+        {
+          tender_id: id,
+          tender_vec: vec
+        }
+      );
+    });
+  });
+  function checkChoice() {
+    $('#make-choice').hide()
+    $('#go-next').hide()
+    $('.x-lots').hide()
+    $('.to_hide').hide()
+
+    if (table.getSelection().length === 0) {
+      $('#make-choice').show()
+      $('#go-next').hide()
+    } else {
+      $('#make-choice').hide()
+      $('#go-next').show()
+      console.log(table)
+    }
+  }
+
+  checkChoice()
+
+  google.visualization.events.addListener(table, 'select', function() {
+    bubble.setSelection(table.getSelection())
+    var currentRowIndex = table.getSelection()
+
+    // номер строки таблицы (индекс), по которой было совершено действие
+    if (currentRowIndex.length > 0) {
+      currentRowIndex = currentRowIndex[0].row
+    }
+
+    checkChoice()
+
+  });
+
+  google.visualization.events.addListener(bubble, 'select', function() {
+    table.setSelection(bubble.getSelection());
+  });
+}
+
+function collapseSettings() {
+  var toggle = $('.js-toggle')
+  var height = $('.x-settings').outerHeight()
+  toggle.on('click', function() {
+    if ($('.x-hexagon__corners').hasClass('is-collapsed')){
+      $('.x-settings').css('height', '').css('overflow', '')
+      $('.x-hexagon__corners').removeClass('is-collapsed')
+    } else {
+      $('.x-settings').css('height', '80px').css('overflow', 'hidden')
+      $('.x-hexagon__corners').addClass('is-collapsed')
+    }
+  })
 }
 
 $(document).ready(function() {
@@ -434,17 +408,20 @@ $(document).ready(function() {
   additionalField()
   validationForm()
   autocompleteRegion()
+  $('.table_in').on('click', function(){
+    $('.x-lots').hide();
+    alert('clicked');
+  });
   $('.js-add').on('click', autocompleteRegion)
   collapseSettings();
   google.charts.load('current', {'packages': ['table', 'corechart'], 'language': 'ru'});
-  if (document.querySelector('#myPieChart')) {
-    google.charts.setOnLoadCallback(drawPieChart)
-    drawLegend(dataArrPieOne, colorsPieOne);
-  }
+  // if (document.querySelector('#myPieChart')) {
+  //   google.charts.setOnLoadCallback(drawPieChart)
+  //   drawLegend(dataArrPieOne, colorsPieOne);
+  // }
   if (document.querySelector('#table_div')) {
     google.charts.setOnLoadCallback(drawBubbleChart);
   }
-  circleProgressInit();
   if (document.querySelector('#piechartTwo')) {
     google.charts.setOnLoadCallback(drawPieChartTwo)
   }

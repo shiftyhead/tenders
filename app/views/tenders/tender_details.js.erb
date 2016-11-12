@@ -1,0 +1,19 @@
+$('.x-lots').show();
+$('.to_hide').show();
+$('.x-lots').html("<%= escape_javascript(render :partial => 'tenders/tender', :locals => {:activity => @tender}) %>");
+function circleProgressInit() {
+  var persentage = "<%= @tender_vec.to_i%>";
+
+  $('#progress').circleProgress({
+    value: persentage / 100,
+    size: 100,
+    fill: {color: "#fff"},
+    emptyFill: "#d9dada",
+    startAngle: 0,
+    thickness: 10,
+    lineCap: "round"
+  });
+  // Для отображения процентов внутри прогресс-бара
+  $('#progress').attr('data-content', persentage + '%');
+}
+circleProgressInit();

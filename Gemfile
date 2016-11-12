@@ -19,6 +19,7 @@ gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 gem 'gon', '~> 6.0', '>= 6.0.1'
 gem 'jbuilder', '~> 2.5'
+gem 'russian', '~> 0.6.0'
 
 group :development, :test do
   gem 'byebug', platform: :mri

@@ -1,10 +1,11 @@
-p
-  = tender.name
-  |
-  = tender.start_date
-  |
-  = tender.end_date
-  |
-  = tender.address
-  |
-  = tender.item_price
+    h2.x-lots__title Лоты тендера № #{@tender.id} “#{@tender.name}”
+    .x-lots__wrapper
+      .x-lots__block.x-lots__block--small
+        ul.x-lots__list
+          - @tender.items.pluck(:content).each do |content|
+            li.x-lots__item.is-active = content
+          / li.x-lots__item.is-active Гайка М12
+          / li.x-lots__item Втулка РК-75 НГ
+      .x-lots__block.x-lots__block--big
+        #progress.x-lots__part
+        .x-lots__block.x-lots__block--big Позиций совпадает с продукцией вашей компании

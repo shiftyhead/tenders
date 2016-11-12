@@ -1,0 +1,22 @@
+= include_gon
+.x-step
+  / .x-chart
+  /   h2.x-chart__title
+  /     | Всего найдено #{@tenders.count} &nbsp;
+
+  /     | тендеров за период с #{params[:dateFrom]} по #{params[:dateTo]}
+  /   .x-chart__wrapper
+  /     #myPieChart style=("width: 80%; height: 400px")
+  /     .x-legend
+  /       ul.x-legend__list
+  .x-chart.x-chart--wide
+    h2.x-chart__title.h-margin-bottom Распределение тендеров подходящих #{params[:companyName]} за период с #{params[:dateFrom]} по #{params[:dateTo]}
+    table.y-table align="center"
+      tr
+        td.y-table__cell style=("width: 40%; vertical-align: middle; position: relative; left:-9px;padding-right: 20px;")
+          #table_div.table_div style=("width: 103%;")
+        td.y-table__cell style=("width: 60%; vertical-align: middle; position: relative; right:-9px;")
+          #bubble_div.bubble_div
+    #make-choice.make-choice Выберете интересующий тендер из таблицы
+    button#go-next.x-form__button  Далее
+    = render 'shared/step3'
