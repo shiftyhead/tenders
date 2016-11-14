@@ -341,17 +341,16 @@ function drawBubbleChart() {
     })
   }
   $('.x-table__row').on('click', function(){
-    var id = $(this).find('.x-table__cell:first').html();
-    var vec = $(this).find('.x-table__cell:nth-child(3)').html();
-    $('#go-next').on('click', function(){
-      $.get(
-        "/tenders/tender_details",
-        {
-          tender_id: id,
-          tender_vec: vec
-        }
-      );
-    });
+    $('#_tender_id').val($(this).find('.x-table__cell:first').html());
+    $('#_tender_ves').val($(this).find('.x-table__cell:nth-child(3)').html());
+  });
+  $('#go-next').on('click', function(){
+    $.get("/tenders/tender_details",
+      {
+        tender_id: $('#_tender_id').val(),
+        tender_vec: $('#_tender_ves').val()
+      }
+    );
   });
   function checkChoice() {
     $('#make-choice').hide()
@@ -365,7 +364,6 @@ function drawBubbleChart() {
     } else {
       $('#make-choice').hide()
       $('#go-next').show()
-      console.log(table)
     }
   }
 

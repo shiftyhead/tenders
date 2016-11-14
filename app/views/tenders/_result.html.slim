@@ -18,5 +18,10 @@
         td.y-table__cell style=("width: 60%; vertical-align: middle; position: relative; right:-9px;")
           #bubble_div.bubble_div
     #make-choice.make-choice Выберете интересующий тендер из таблицы
-    button#go-next.x-form__button  Далее
+    = simple_form_for '', remote: true, url: tender_details_tenders_path do |f|
+      = f.input :tender_id, as: :hidden
+      = f.input :tender_ves, as: :hidden
+      / = f.submit 'Далее', class: 'x-form__button', id: 'go-next'
+    button#go-next.x-form__button Далее
+
     = render 'shared/step3'
