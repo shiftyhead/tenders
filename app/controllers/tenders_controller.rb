@@ -42,6 +42,7 @@ class TendersController < ApplicationController
       gon.companies_with_tenders = @companies.map { |c| [c.name, @tenders.where(company_id: c.id).count]}
     else
       @tenders = Tender.all.order(created_at: :desc)
+      session.delete :resoult
     end
     # binding.pry
   end
