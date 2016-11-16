@@ -48,7 +48,7 @@ class TendersController < ApplicationController
   end
 
   def index2
-
+    @tenders = Tender.all.order(created_at: :desc)
   end
 
   def index3

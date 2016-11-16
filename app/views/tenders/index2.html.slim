@@ -1,0 +1,47 @@
+ul
+  - @tenders.each do |tender|
+    li
+      'tender name
+      | :
+      = tender.name
+      | , company name
+      = tender.company.name if tender.company.present?
+      br
+      'start at :
+      |
+      = tender.start_date.strftime('%F')
+      |
+      '  end at
+      |
+      = tender.end_date.strftime('%F')
+      |
+      br
+      '  tender status:
+      |
+      = tender.status
+      | ,
+      'region:
+      |
+      = tender.region
+      |
+
+      'item price:
+      |
+      = tender.item_price
+      |
+      'items:
+      |
+      br
+      - tender.items.each do |item|
+        'content:
+        |
+        = item.content
+        |
+        |/
+        |
+        'quantity:
+        |
+        = item.quantity
+        br
+    br
+    br
