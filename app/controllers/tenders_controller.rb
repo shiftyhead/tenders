@@ -57,7 +57,7 @@ class TendersController < ApplicationController
             @cat_4 << tender
           end
       end
-      gon.tenders = @tenders.map{ |tender| [tender.id.to_s, tender.name, tender_weight(tender).to_s + ' %', tender.category, tender.region, tender.start_date.strftime('%d, %b, %y'), tender.end_date.strftime('%d, %b, %y'), tender.item_price.to_s]}
+      gon.tenders = @tenders.map{ |tender| [tender.id.to_s, tender.name, tender_weight(tender).to_s + ' %', tender.category, tender.company.name, tender.start_date.strftime('%d, %b, %y'), tender.end_date.strftime('%d, %b, %y'), tender.item_price.to_s]}
       gon.tenders_bubles = @tenders.map{ |tender| [tender.id.to_s, tender.start_date.strftime('%d, %b, %y'), tender.item_price, tender.category, tender_weight(tender)]}
       gon.tenders_bubles.insert(0, ['ID', 'Дата', 'Сумма', 'Процедура', 'Доля'])
       @companies = Company.find(@tenders.pluck(:company_id))

@@ -332,14 +332,13 @@ function drawBubbleChart() {
 
   var rows = [].slice.call(document.querySelectorAll('.x-table__row'));
 
-  if (window.location.pathname === '/index3.html') {
-    var rows = [].slice.call(document.querySelectorAll('.x-table__row'));
-    rows.forEach(function(item, index) {
-      if (index === 2) {
-        item.classList.add('is-active')
-      }
-    })
-  }
+  var rows = [].slice.call(document.querySelectorAll('.x-table__row'));
+    // rows.forEach(function(item, index) {
+    //   if (index === 2) {
+    //     item.classList.add('is-active');
+    //     console.log(item);
+    //   }
+    // })
   $('.x-table__row').on('click', function(){
     $('#_tender_id').val($(this).find('.x-table__cell:first').html());
     $('#_tender_ves').val($(this).find('.x-table__cell:nth-child(3)').html());
@@ -384,6 +383,13 @@ function drawBubbleChart() {
 
   google.visualization.events.addListener(bubble, 'select', function() {
     table.setSelection(bubble.getSelection());
+    // console.log(bubble.getSelection()[0].row);
+    // $('tbody .x-table__row:nth-child(1)').find('.x-table__cell:nth-child(1)').html()
+    var _this = $('.google-visualization-table-tr-sel');
+      $('#_tender_id').val(_this.find('.x-table__cell:first').html());
+      $('#_tender_ves').val(_this.find('.x-table__cell:nth-child(3)').html());
+      checkChoice()
+    // console.log(table.setSelection(bubble.getSelection()));
   });
 }
 
@@ -408,7 +414,6 @@ $(document).ready(function() {
   autocompleteRegion()
   $('.table_in').on('click', function(){
     $('.x-lots').hide();
-    alert('clicked');
   });
   $('.js-add').on('click', autocompleteRegion)
   collapseSettings();
