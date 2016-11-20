@@ -154,22 +154,22 @@ function datetimepickerInit() {
 // var dataArrPieOne = [
 //   {
 //     name: 'Категория №1',
-//     quantity: 174,
+//     quantity: gon.cat_1,
 //     portion: '(от 75%-100% лотов из тендера соответсвует продукции вашей компании)'
 //   },
 //   {
 //     name: 'Категория №2',
-//     quantity: 133,
+//     quantity: gon.cat_2,
 //     portion: '(от 50%-75% лотов из тендера соответсвует продукции вашей компании)'
 //   },
 //   {
 //     name: 'Категория №3',
-//     quantity: 307,
+//     quantity: gon.cat_3,
 //     portion: '(от 25%-50% лотов из тендера соответсвует продукции вашей компании)'
 //   },
 //   {
 //     name: 'Категория №4',
-//     quantity: 410,
+//     quantity: gon.cat_4,
 //     portion: '(от 0%-25% лотов из тендера соответсвует продукции вашей компании)'
 //   }
 // ]
@@ -184,34 +184,34 @@ function datetimepickerInit() {
 //   data.addColumn('string', 'Element')
 //   data.addColumn('number', 'Percentage')
 //   data.addRows([
-//     ['Категория № 1', 174],
-//     ['Категория № 2', 133],
-//     ['Категория № 3', 307],
-//     ['Категория № 4', 410]
+//     ['Категория № 1', gon.cat_1],
+//     ['Категория № 2', gon.cat_2],
+//     ['Категория № 3', gon.cat_3],
+//     ['Категория № 4', gon.cat_4]
 //   ]);
 //   // Instantiate and draw the chart.
 //   var chart = new google.visualization.PieChart(document.getElementById('myPieChart'));
 //   chart.draw(data, options);
 // }
 
-function drawLegend(arr, colors) {
-  var myHTML = "";
-  var template = "<li class='x-legend__item'><div>#quantity# тендеров</div><div><span style='color:#color#'>#name#</span> #portion#</div></li>"
-  var temporaryString = "";
+// function drawLegend(arr, colors) {
+//   var myHTML = "";
+//   var template = "<li class='x-legend__item'><div>#quantity# тендеров</div><div><span style='color:#color#'>#name#</span> #portion#</div></li>"
+//   var temporaryString = "";
 
-  arr.forEach(function(item, index) {
-    temporaryString = template;
-    temporaryString = temporaryString.replace("#color#", colors[index]);
-    temporaryString = temporaryString.replace("#quantity#", arr[index].quantity);
-    temporaryString = temporaryString.replace("#name#", arr[index].name);
-    temporaryString = temporaryString.replace("#portion#", arr[index].portion);
+//   arr.forEach(function(item, index) {
+//     temporaryString = template;
+//     temporaryString = temporaryString.replace("#color#", colors[index]);
+//     temporaryString = temporaryString.replace("#quantity#", arr[index].quantity);
+//     temporaryString = temporaryString.replace("#name#", arr[index].name);
+//     temporaryString = temporaryString.replace("#portion#", arr[index].portion);
 
-    myHTML += temporaryString;
-  })
+//     myHTML += temporaryString;
+//   })
 
-  var myList = document.getElementsByClassName('x-legend__list')[0];
-  myList.innerHTML = myHTML;
-}
+//   var myList = document.getElementsByClassName('x-legend__list')[0];
+//   myList.innerHTML = myHTML;
+// }
 
 
 function drawPieChartTwo() {
@@ -304,7 +304,7 @@ function drawBubbleChart() {
         fontSize: 11
       }
     },
-    // colorAxis: { colors: ['white', 'black'], },
+    colorAxis: { colors: ['white', 'black', 'green', 'red'], },
     legend: { position: 'none', },
     chartArea: { left: 50, top: 10, width: '80%', height: '80%' }
   };

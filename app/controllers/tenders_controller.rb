@@ -58,11 +58,15 @@ class TendersController < ApplicationController
           end
       end
       gon.tenders = @tenders.map{ |tender| [tender.id.to_s, tender.name, tender_weight(tender).to_s + ' %', tender.category, tender.company.name, tender.start_date.strftime('%d, %b, %y'), tender.end_date.strftime('%d, %b, %y'), tender.item_price.to_s]}
-      gon.tenders_bubles = @tenders.map{ |tender| [tender.item_price.to_s, tender.start_date.strftime('%d, %b, %y'), tender.item_price, tender.category, tender_weight(tender)]}
+      gon.tenders_bubles = @tenders.map{ |tender| [tender.item_price.to_s, tender.start_date.strftime('%d, %b, %y'), tender.item_price, category_select(tender_weight(tender)), tender_weight(tender)]}
       gon.tenders_bubles.insert(0, ['ID', 'Дата', 'Сумма', 'Процедура', 'Доля'])
       @companies = Company.find(@tenders.pluck(:company_id))
       gon.companies = @companies.map {|company| [company.name, @tenders.where(company_id: company.id).count, average_in_month(company, @tenders, params[:dateFrom], params[:dateTo])]}
       gon.companies_with_tenders = @companies.map { |c| [c.name, @tenders.where(company_id: c.id).count]}
+      gon.cat_1 = @cat_1.count
+      gon.cat_2 = @cat_2.count
+      gon.cat_3 = @cat_3.count
+      gon.cat_4 = @cat_4.count
     else
       @tenders = Tender.all.order(created_at: :desc)
       session.delete :resoult
@@ -118,5 +122,18 @@ class TendersController < ApplicationController
       current_date = current_date + 30
     end
     return counts.inject{ |sum, el| sum + el }.to_f / counts.size
+  end
+
+  def category_select(tw)
+    case tw
+      when 75..100
+        'Категория №1'
+      when 50..74
+        'Категория №2'
+      when 25..49
+        'Категория №3'
+      when 0..24
+        'Категория №4'
+      end
   end
 end

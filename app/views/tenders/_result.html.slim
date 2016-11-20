@@ -1,14 +1,14 @@
 = include_gon
 .x-step
-  / .x-chart
-  /   h2.x-chart__title
-  /     | Всего найдено #{@tenders.count} &nbsp;
+  .x-chart
+    h2.x-chart__title
+      | Всего найдено #{@tenders.count} &nbsp;
 
-  /     | тендеров за период с #{params[:dateFrom]} по #{params[:dateTo]}
-  /   .x-chart__wrapper
-  /     #myPieChart style=("width: 80%; height: 400px")
-  /     .x-legend
-  /       ul.x-legend__list
+      | тендеров за период с #{params[:dateFrom]} по #{params[:dateTo]}
+    .x-chart__wrapper
+      #myPieChart style=("width: 80%; height: 400px")
+      .x-legend
+        ul.x-legend__list
   .x-chart.x-chart--wide
     h2.x-chart__title.h-margin-bottom Распределение тендеров подходящих #{params[:companyName]} за период с #{params[:dateFrom]} по #{params[:dateTo]}
     table.y-table align="center"
@@ -25,3 +25,73 @@
     button#go-next.x-form__button Далее
 
     = render 'shared/step3'
+  javascript:
+    var colorsPieOne = ['#f2cc2f', '#eb5655', '#7ec181', '#4099c6']
+    var dataArrPieOne = [
+      {
+        name: 'Категория №1',
+        quantity: gon.cat_1,
+        portion: '(от 75%-100% лотов из тендера соответсвует продукции вашей компании)'
+      },
+      {
+        name: 'Категория №2',
+        quantity: gon.cat_2,
+        portion: '(от 50%-75% лотов из тендера соответсвует продукции вашей компании)'
+      },
+      {
+        name: 'Категория №3',
+        quantity: gon.cat_3,
+        portion: '(от 25%-50% лотов из тендера соответсвует продукции вашей компании)'
+      },
+      {
+        name: 'Категория №4',
+        quantity: gon.cat_4,
+        portion: '(от 0%-25% лотов из тендера соответсвует продукции вашей компании)'
+      }
+    ]
+
+    function drawPieChart() {
+    // Define the chart to be drawn.
+      var data = new google.visualization.DataTable()
+      var options = {
+              legend: 'none',
+              colors: colorsPieOne,
+            };
+      data.addColumn('string', 'Element')
+      data.addColumn('number', 'Percentage')
+      data.addRows([
+        ['Категория № 1', gon.cat_1],
+        ['Категория № 2', gon.cat_2],
+        ['Категория № 3', gon.cat_3],
+        ['Категория № 4', gon.cat_4]
+      ]);
+      // Instantiate and draw the chart.
+      var chart = new google.visualization.PieChart(document.getElementById('myPieChart'));
+      chart.draw(data, options);
+    }
+
+    function drawLegend(arr, colors) {
+      var myHTML = "";
+      var template = "<li class='x-legend__item'><div>#quantity# тендеров</div><div><span style='color:#color#'>#name#</span> #portion#</div></li>"
+      var temporaryString = "";
+
+      arr.forEach(function(item, index) {
+        temporaryString = template;
+        temporaryString = temporaryString.replace("#color#", colors[index]);
+        temporaryString = temporaryString.replace("#quantity#", arr[index].quantity);
+        temporaryString = temporaryString.replace("#name#", arr[index].name);
+        temporaryString = temporaryString.replace("#portion#", arr[index].portion);
+
+        myHTML += temporaryString;
+      })
+
+      var myList = document.getElementsByClassName('x-legend__list')[0];
+      myList.innerHTML = myHTML;
+    }
+
+    $(function(){
+      if (document.querySelector('#myPieChart')) {
+          google.charts.setOnLoadCallback(drawPieChart)
+          drawLegend(dataArrPieOne, colorsPieOne);
+      }
+    });
