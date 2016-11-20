@@ -1,12 +1,10 @@
-- if params[:dateFrom].present?
-  javascript:
-    $(function(){
-      $('input[name=companyName]').val("#{params[:companyName]}");
-      $('input[name=dateFrom]').val("#{params[:dateFrom]}");
-      $('input[name=dateTo]').val("#{params[:dateTo]}");
-      $('input[name=productName]').val("#{params[:productName]}");
-      console.log("#{params[:regionName]}");
-    });
+javascript:
+  $(function(){
+    $('input[name=companyName]').val("#{params[:companyName]}");
+    $('input[name=dateFrom]').val("#{params[:dateFrom]}");
+    $('input[name=dateTo]').val("#{params[:dateTo]}");
+    $('input[name=productName]').val("#{params[:productName]}");
+  });
 - if params[:regionName].present?
   -if params[:regionName].count == 1
     javascript:

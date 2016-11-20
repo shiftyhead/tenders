@@ -304,7 +304,7 @@ function drawBubbleChart() {
         fontSize: 11
       }
     },
-    colorAxis: { colors: ['yellow', 'red'], },
+    // colorAxis: { colors: ['white', 'black'], },
     legend: { position: 'none', },
     chartArea: { left: 50, top: 10, width: '80%', height: '80%' }
   };
@@ -433,16 +433,16 @@ function validationForm() {
       },
       productName: {
         required: true
-      },
-      dateFrom: {
-        required: true
-      },
-      dateTo: {
-        required: true
-      },
-      'regionName[]': {
-        required: true
       }
+      // dateFrom: {
+      //   required: true
+      // },
+      // dateTo: {
+      //   required: true
+      // },
+      // 'regionName[]': {
+      //   required: true
+      // }
     },
 
     messages: {

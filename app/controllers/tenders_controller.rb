@@ -3,13 +3,36 @@ class TendersController < ApplicationController
   def index
     if params[:regionName].present?
       session[:resoult] = "resoult"
-      @tenders = Tender.where('start_date >= ?', params[:dateFrom].to_datetime)
-      @tenders = Tender.where(id: @tenders.pluck(:id)).where('end_date <= ?', params[:dateTo].to_datetime)
-      @tenders = Tender.where(id: @tenders.pluck(:id)).where(region: params['regionName'])
-      @tenders = Tender.where(id: @tenders.pluck(:id)).where(category: params['tender_category']) if ( params[:tender_category] != 'Все')
-      @tenders = Tender.where(id: @tenders.pluck(:id)).where(status: params['tender_status']) if ( params[:tender_status] != 'Все')
+      @tenders = Tender.where('start_date >= ?', params[:dateFrom].to_datetime) if params[:dateFrom].present?
+
+      if @tenders.present? && params['dateTo'].present?
+        @tenders = Tender.where(id: @tenders.pluck(:id)).where('end_date <= ?', params[:dateTo].to_datetime)
+      else
+        @tenders = Tender.where('end_date <= ?', params[:dateTo].to_datetime)
+      end
+
+      if @tenders.present? && params['regionName'].first.present?
+        @tenders = Tender.where(id: @tenders.pluck(:id)).where(region: params['regionName'])
+      elsif params['regionName'].first.present?
+        @tenders = Tender.where(region: params['regionName'])
+      end
+
+      if @tenders.present? && params['tender_category'].present? && (params['tender_category'] != 'Все')
+        @tenders = Tender.where(id: @tenders.pluck(:id)).where(category: params['tender_category']) if params['tender_category'] != 'Все'
+      else
+        @tenders = Tender.where(category: params['tender_category']) if params['tender_category'] != 'Все'
+      end
+
+      if @tender.present? && params[:tender_status].present? && (params[:tender_status] != 'Все')
+        @tenders = Tender.where(id: @tenders.pluck(:id)).where(status: params['tender_status']) if ( params[:tender_status] != 'Все')
+      else
+        @tenders = Tender.where(id: @tenders.pluck(:id)).where(status: params['tender_status']) if ( params[:tender_status] != 'Все')
+      end
+
+      @tenders = Tender.all if !@tenders.present?
 
       @tender_ids = @tenders.pluck(:id)
+
       @needed_ids = Item.where(tender_id: @tender_ids).pg_search(params[:productName]).pluck(:tender_id)
       if params[:stopName].present?
         @not_need_ids = Item.where(tender_id: @tender_ids).pg_search(params[:stopName]).pluck(:tender_id)
@@ -44,7 +67,9 @@ class TendersController < ApplicationController
       @tenders = Tender.all.order(created_at: :desc)
       session.delete :resoult
     end
-    # binding.pry
+  # rescue
+  #   @tenders = Tender.all.order(created_at: :desc)
+  #   session.delete :resoult
   end
 
   def index2
@@ -78,12 +103,18 @@ class TendersController < ApplicationController
     return ((100*matched.to_f)/total.to_f).to_i
   end
 
-  def average_in_month(company, tenders, from_date, to_date)
+  def average_in_month(company, tenders, from_date = nil, to_date = nil)
     counts = []
-    current_date = from_date.to_date
+    if from_date.present?
+      current_date = from_date.to_date
+    else
+      current_date = tenders.order(start_date: :asc).first.start_date.to_datetime
+    end
+
+    to_date = tenders.order(end_date: :desc).first.end_date.to_datetime unless to_date.present?
+
     while current_date < to_date.to_date do
-      # binding.pry
-      counts << @tenders.where(company_id: company.id).where('end_date <= ?', to_date.to_date).count
+      counts << tenders.where(company_id: company.id).where('end_date <= ?', to_date.to_date).count
       current_date = current_date + 30
     end
     return counts.inject{ |sum, el| sum + el }.to_f / counts.size
