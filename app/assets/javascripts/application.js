@@ -306,10 +306,10 @@ function drawBubbleChart() {
       },
       color: '#fff'
     },
-    // {minValue: 0,  colors: ['#FFFFFF', '#000000']}
-    // colorAxis: {colors: ['yellow', 'red', 'green', 'blue']},
+    // colors: ['#f2cc2f', '#eb5655', '#7ec181', '#4099c6'],
     legend: { position: 'none', },
-    chartArea: { left: 50, top: 10, width: '80%', height: '80%' }
+    chartArea: { left: 50, top: 10, width: '80%', height: '80%' },
+    enableInteractivity: false
   };
 
   var cssClassNames = {
@@ -332,9 +332,30 @@ function drawBubbleChart() {
 
   var bubble = new google.visualization.BubbleChart(document.getElementById('bubble_div'));
   google.visualization.events.addListener(bubble, 'ready', function() {
-    console.log($(this));
+    // console.log($(this));
   });
   bubble.draw(dataForBubble, optionsBubble);
+
+  // var elem = $('circle').next().find('text').text();
+  var elems = $('circle')
+  elems.each(function(elem) {
+    var $this = $(this)
+    var textElem = $this.next().find('text')[0]
+    var text = $(textElem).text()
+    if (find(gon.k1_p, text)) {
+      $this.attr("fill",'#f2cc2f');
+    } else if (find(gon.k2_p, text)) {
+      $this.attr("fill",'#eb5655');
+
+    } else if (find(gon.k3_p, text)) {
+      $this.attr("fill",'#7ec181');
+    } else if (find(gon.k4_p, text)) {
+      $this.attr("fill",'#4099c6');
+    } else {
+      $this.attr("fill",'rgba(0,0,0,0)');
+      $this.attr("stroke",'rgba(0,0,0,0)');
+    }
+  })
 
   var rows = [].slice.call(document.querySelectorAll('.x-table__row'));
 
@@ -375,12 +396,60 @@ function drawBubbleChart() {
   checkChoice()
   google.visualization.events.addListener(table, 'select', function() {
     bubble.setSelection(table.getSelection())
+
     var currentRowIndex = table.getSelection()
 
     // номер строки таблицы (индекс), по которой было совершено действие
     if (currentRowIndex.length > 0) {
       currentRowIndex = currentRowIndex[0].row
     }
+
+    var $gs = $('g')
+
+    $gs.each(function(elem) {
+      if ($(this).children('circle').length == 2) {
+        // console.log(this);
+        var $this = $(this)
+        var textElem = $this.next().find('text')
+        var text = $($(textElem)[0]).text()
+        // console.log('text', text);
+
+        if (find(gon.k1_p, text)) {
+          $($this.children('circle')[0]).attr('stroke', '#f2cc2f')
+          $($this.children('circle')[1]).attr('fill', '#f2cc2f')
+        } else if (find(gon.k2_p, text)) {
+          $($this.children('circle')[0]).attr('stroke', '#eb5655')
+          $($this.children('circle')[1]).attr('fill', '#eb5655')
+        } else if (find(gon.k3_p, text)) {
+          $($this.children('circle')[0]).attr('stroke', '#7ec181')
+          $($this.children('circle')[1]).attr('fill', '#7ec181')
+        } else {
+          $($this.children('circle')[0]).attr('stroke', '#4099c6')
+          $($this.children('circle')[1]).attr('fill', '#4099c6')
+        }
+      }
+    })
+
+    var $elems = $('circle')
+    $elems.each(function(elem) {
+      var fill = $(this).attr('fill')
+      if (fill === '#dc3912' || fill === '#ff9900' || fill === '#3366cc' || fill === '#109618') {
+        var txt = $($(this).next().find('text')[0]).text()
+        if (find(gon.k1_p, txt)) {
+          console.log('gold');
+          $(this).attr("fill",'#f2cc2f');
+        } else if (find(gon.k2_p, txt)) {
+          $(this).attr("fill",'#eb5655');
+        } else if (find(gon.k3_p, txt)) {
+          $(this).attr("fill",'#7ec181');
+        } else if (find(gon.k4_p, txt)){
+          $(this).attr("fill",'#4099c6');
+        } else {
+          $this.attr("fill",'rgba(0,0,0,0)');
+          $this.attr("stroke",'rgba(0,0,0,0)');
+        }
+      }
+    })
 
     checkChoice()
 
@@ -473,4 +542,13 @@ function validationForm() {
       }
     }
   })
+}
+
+function find(array, value) {
+
+  for (var i = 0; i < array.length; i++) {
+    if (array[i] == value) return true;
+  }
+
+  return false;
 }
