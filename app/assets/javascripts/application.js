@@ -299,12 +299,15 @@ function drawBubbleChart() {
       format: 'M'
     },
     vAxis: { title: 'Цена контракта, млн. руб.', },
+
     bubble: {
       textStyle: {
         fontSize: 11
-      }
+      },
+      color: '#fff'
     },
-    colorAxis: { colors: ['white', 'black', 'green', 'red'], },
+    // {minValue: 0,  colors: ['#FFFFFF', '#000000']}
+    // colorAxis: {colors: ['yellow', 'red', 'green', 'blue']},
     legend: { position: 'none', },
     chartArea: { left: 50, top: 10, width: '80%', height: '80%' }
   };
@@ -328,6 +331,9 @@ function drawBubbleChart() {
   table.draw(dataForTable, optionsTable);
 
   var bubble = new google.visualization.BubbleChart(document.getElementById('bubble_div'));
+  google.visualization.events.addListener(bubble, 'ready', function() {
+    console.log($(this));
+  });
   bubble.draw(dataForBubble, optionsBubble);
 
   var rows = [].slice.call(document.querySelectorAll('.x-table__row'));
@@ -367,7 +373,6 @@ function drawBubbleChart() {
   }
 
   checkChoice()
-
   google.visualization.events.addListener(table, 'select', function() {
     bubble.setSelection(table.getSelection())
     var currentRowIndex = table.getSelection()
