@@ -299,14 +299,16 @@ function drawBubbleChart() {
       format: 'M'
     },
     vAxis: { title: 'Цена контракта, млн. руб.', },
-
     bubble: {
       textStyle: {
         fontSize: 11
-      },
-      color: '#fff'
+      }
     },
-    // colors: ['#f2cc2f', '#eb5655', '#7ec181', '#4099c6'],
+// <<<<<<< HEAD
+//     // colors: ['#f2cc2f', '#eb5655', '#7ec181', '#4099c6'],
+// =======
+//     colorAxis: { colors: ['white', 'black', 'green', 'red'], },
+// >>>>>>> parent of b56c059... add fixes add sub categories
     legend: { position: 'none', },
     chartArea: { left: 50, top: 10, width: '80%', height: '80%' },
     enableInteractivity: false
@@ -331,9 +333,12 @@ function drawBubbleChart() {
   table.draw(dataForTable, optionsTable);
 
   var bubble = new google.visualization.BubbleChart(document.getElementById('bubble_div'));
-  google.visualization.events.addListener(bubble, 'ready', function() {
-    // console.log($(this));
-  });
+// <<<<<<< HEAD
+//   google.visualization.events.addListener(bubble, 'ready', function() {
+//     // console.log($(this));
+//   });
+// =======
+// >>>>>>> parent of b56c059... add fixes add sub categories
   bubble.draw(dataForBubble, optionsBubble);
 
   // var elem = $('circle').next().find('text').text();
@@ -394,6 +399,7 @@ function drawBubbleChart() {
   }
 
   checkChoice()
+
   google.visualization.events.addListener(table, 'select', function() {
     bubble.setSelection(table.getSelection())
 

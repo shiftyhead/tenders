@@ -57,27 +57,8 @@ class TendersController < ApplicationController
             @cat_4 << tender
           end
       end
-
       gon.tenders = @tenders.map{ |tender| [tender.id.to_s, tender.name, tender_weight(tender).to_s + ' %', tender.category, tender.company.name, tender.start_date.strftime('%d, %b, %y'), tender.end_date.strftime('%d, %b, %y'), tender.item_price.to_s]}
-      gon.k1_p = []
-      gon.k2_p = []
-      gon.k3_p = []
-      gon.k4_p = []
-      gon.tenders_bubles = @tenders.map { |tender| [tender.item_price.to_s, tender.start_date.strftime('%d, %b, %y'), tender.item_price, category_select(tender_weight(tender)), tender_weight(tender)] }
-      @tenders.map do |tender| 
-        case category_select(tender_weight(tender))
-        when 'Категория №1'
-          gon.k1_p << tender.item_price.to_s
-        when 'Категория №2'
-          gon.k2_p << tender.item_price.to_s
-        when 'Категория №3' 
-          gon.k3_p << tender.item_price.to_s
-        else
-          gon.k4_p << tender.item_price.to_s
-        end
-      end
-      # gon.tenders_bubles = @tenders.map{ |tender| [tender.item_price.to_s, tender.start_date.strftime('%d, %b, %y'), tender.item_price, tender_weight(tender),tender_weight(tender)]}
-
+      gon.tenders_bubles = @tenders.map{ |tender| [tender.item_price.to_s, tender.start_date.strftime('%d, %b, %y'), tender.item_price, category_select(tender_weight(tender)), tender_weight(tender)]}
       gon.tenders_bubles.insert(0, ['ID', 'Дата', 'Сумма', 'Процедура', 'Доля'])
       @companies = Company.find(@tenders.pluck(:company_id))
       gon.companies = @companies.map {|company| [company.name, @tenders.where(company_id: company.id).count, average_in_month(company, @tenders, params[:dateFrom], params[:dateTo])]}
