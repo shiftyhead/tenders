@@ -354,11 +354,8 @@ function drawBubbleChart() {
 
     } else if (find(gon.k3_p, text)) {
       $this.attr("fill",'#7ec181');
-    } else if (find(gon.k4_p, text)) {
-      $this.attr("fill",'#4099c6');
     } else {
-      $this.attr("fill",'rgba(0,0,0,0)');
-      $this.attr("stroke",'rgba(0,0,0,0)');
+      $this.attr("fill",'#4099c6');
     }
   })
 
@@ -448,11 +445,8 @@ function drawBubbleChart() {
           $(this).attr("fill",'#eb5655');
         } else if (find(gon.k3_p, txt)) {
           $(this).attr("fill",'#7ec181');
-        } else if (find(gon.k4_p, txt)){
-          $(this).attr("fill",'#4099c6');
         } else {
-          $this.attr("fill",'rgba(0,0,0,0)');
-          $this.attr("stroke",'rgba(0,0,0,0)');
+          $(this).attr("fill",'#4099c6');
         }
       }
     })
