@@ -7,3 +7,9 @@
     - if session[:resoult].present?
       = render 'result'
     = render  'shared/footer'
+
+.span12
+  - if @charts.present?
+    = high_chart("some_id1", @charts ) do |c|
+      = raw "options.plotOptions.series.point.events.click = function() { circleOnClick($(this)) }"
+

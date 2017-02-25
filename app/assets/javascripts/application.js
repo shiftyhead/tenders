@@ -15,6 +15,9 @@
 //= require 3rd-party/jqueryvalidate/jquery.validate.js
 //= require 3rd-party/datetimepicker/jquery.datetimepicker.full.js
 //= require 3rd-party/circleProgressJQuery.js
+//= require highcharts/highcharts
+//= require highcharts/highcharts-more
+//= require highcharts/highstock
 //= require moment
 
 function additionalField() {
@@ -287,32 +290,6 @@ function drawBubbleChart() {
     tenders_bubles[i][1] = new Date(tenders_bubles[i][1])
     i++
   }
-  console.log(tenders_bubles);
-  var dataForBubble = google.visualization.arrayToDataTable(
-    tenders_bubles
-  )
-  // ['134569', new Date(2013, 4, 13), 1000500, 'Запрос цен', 14]
-
-  var optionsBubble = {
-    hAxis: {
-      title: 'Дата, дни',
-      format: 'M'
-    },
-    vAxis: { title: 'Цена контракта, млн. руб.', },
-    bubble: {
-      textStyle: {
-        fontSize: 11
-      }
-    },
-// <<<<<<< HEAD
-//     // colors: ['#f2cc2f', '#eb5655', '#7ec181', '#4099c6'],
-// =======
-//     colorAxis: { colors: ['white', 'black', 'green', 'red'], },
-// >>>>>>> parent of b56c059... add fixes add sub categories
-    legend: { position: 'none', },
-    chartArea: { left: 50, top: 10, width: '80%', height: '80%' },
-    enableInteractivity: false
-  };
 
   var cssClassNames = {
     tableRow: 'x-table__row table_in',
@@ -332,46 +309,15 @@ function drawBubbleChart() {
   var table = new google.visualization.Table(document.getElementById('table_div'));
   table.draw(dataForTable, optionsTable);
 
-  var bubble = new google.visualization.BubbleChart(document.getElementById('bubble_div'));
-// <<<<<<< HEAD
-//   google.visualization.events.addListener(bubble, 'ready', function() {
-//     // console.log($(this));
-//   });
-// =======
-// >>>>>>> parent of b56c059... add fixes add sub categories
-  bubble.draw(dataForBubble, optionsBubble);
-
-  // var elem = $('circle').next().find('text').text();
-  var elems = $('circle')
-  elems.each(function(elem) {
-    var $this = $(this)
-    var textElem = $this.next().find('text')[0]
-    var text = $(textElem).text()
-    if (find(gon.k1_p, text)) {
-      $this.attr("fill",'#f2cc2f');
-    } else if (find(gon.k2_p, text)) {
-      $this.attr("fill",'#eb5655');
-
-    } else if (find(gon.k3_p, text)) {
-      $this.attr("fill",'#7ec181');
-    } else {
-      $this.attr("fill",'#4099c6');
-    }
-  })
-
   var rows = [].slice.call(document.querySelectorAll('.x-table__row'));
 
   var rows = [].slice.call(document.querySelectorAll('.x-table__row'));
-    // rows.forEach(function(item, index) {
-    //   if (index === 2) {
-    //     item.classList.add('is-active');
-    //     console.log(item);
-    //   }
-    // })
+
   $('.x-table__row').on('click', function(){
     $('#_tender_id').val($(this).find('.x-table__cell:first').html());
     $('#_tender_ves').val($(this).find('.x-table__cell:nth-child(3)').html());
   });
+
   $('#go-next').on('click', function(){
     $.get("/tenders/tender_details",
       {
@@ -398,8 +344,7 @@ function drawBubbleChart() {
   checkChoice()
 
   google.visualization.events.addListener(table, 'select', function() {
-    bubble.setSelection(table.getSelection())
-
+    // bubble.setSelection(table.getSelection())
     var currentRowIndex = table.getSelection()
 
     // номер строки таблицы (индекс), по которой было совершено действие
@@ -407,64 +352,10 @@ function drawBubbleChart() {
       currentRowIndex = currentRowIndex[0].row
     }
 
-    var $gs = $('g')
-
-    $gs.each(function(elem) {
-      if ($(this).children('circle').length == 2) {
-        // console.log(this);
-        var $this = $(this)
-        var textElem = $this.next().find('text')
-        var text = $($(textElem)[0]).text()
-        // console.log('text', text);
-
-        if (find(gon.k1_p, text)) {
-          $($this.children('circle')[0]).attr('stroke', '#f2cc2f')
-          $($this.children('circle')[1]).attr('fill', '#f2cc2f')
-        } else if (find(gon.k2_p, text)) {
-          $($this.children('circle')[0]).attr('stroke', '#eb5655')
-          $($this.children('circle')[1]).attr('fill', '#eb5655')
-        } else if (find(gon.k3_p, text)) {
-          $($this.children('circle')[0]).attr('stroke', '#7ec181')
-          $($this.children('circle')[1]).attr('fill', '#7ec181')
-        } else {
-          $($this.children('circle')[0]).attr('stroke', '#4099c6')
-          $($this.children('circle')[1]).attr('fill', '#4099c6')
-        }
-      }
-    })
-
-    var $elems = $('circle')
-    $elems.each(function(elem) {
-      var fill = $(this).attr('fill')
-      if (fill === '#dc3912' || fill === '#ff9900' || fill === '#3366cc' || fill === '#109618') {
-        var txt = $($(this).next().find('text')[0]).text()
-        if (find(gon.k1_p, txt)) {
-          console.log('gold');
-          $(this).attr("fill",'#f2cc2f');
-        } else if (find(gon.k2_p, txt)) {
-          $(this).attr("fill",'#eb5655');
-        } else if (find(gon.k3_p, txt)) {
-          $(this).attr("fill",'#7ec181');
-        } else {
-          $(this).attr("fill",'#4099c6');
-        }
-      }
-    })
-
     checkChoice()
 
   });
 
-  google.visualization.events.addListener(bubble, 'select', function() {
-    table.setSelection(bubble.getSelection());
-    // console.log(bubble.getSelection()[0].row);
-    // $('tbody .x-table__row:nth-child(1)').find('.x-table__cell:nth-child(1)').html()
-    var _this = $('.google-visualization-table-tr-sel');
-      $('#_tender_id').val(_this.find('.x-table__cell:first').html());
-      $('#_tender_ves').val(_this.find('.x-table__cell:nth-child(3)').html());
-      checkChoice()
-    // console.log(table.setSelection(bubble.getSelection()));
-  });
 }
 
 function collapseSettings() {
@@ -504,6 +395,14 @@ $(document).ready(function() {
   }
 });
 
+function circleOnClick(circle) {
+  $('#_tender_id').val(circle.attr('id'));
+  $('#_tender_ves').val(circle.attr('z'));
+  $('#go-next').show();
+  $('.x-lots').hide()
+  $('.to_hide').hide()
+}
+
 function validationForm() {
   $(".x-form").validate({
     rules: {
@@ -542,13 +441,4 @@ function validationForm() {
       }
     }
   })
-}
-
-function find(array, value) {
-
-  for (var i = 0; i < array.length; i++) {
-    if (array[i] == value) return true;
-  }
-
-  return false;
 }
