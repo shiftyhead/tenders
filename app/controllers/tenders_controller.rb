@@ -3,30 +3,29 @@ class TendersController < ApplicationController
   def index
     if params[:regionName].present?
       session[:resoult] = "resoult"
+
       @tenders = Tender.where('start_date >= ?', params[:dateFrom].to_datetime) if params[:dateFrom].present?
 
       if @tenders.present? && params['dateTo'].present?
-        @tenders = Tender.where(id: @tenders.pluck(:id)).where('end_date <= ?', params[:dateTo].to_datetime)
-      else
+        @tenders = @tenders.map { |t| t if t.end_date <= params[:dateTo].to_datetime }.compact
+      elsif params['dateTo'].present?
         @tenders = Tender.where('end_date <= ?', params[:dateTo].to_datetime)
       end
 
       if @tenders.present? && params['regionName'].first.present?
-        @tenders = Tender.where(id: @tenders.pluck(:id)).where(region: params['regionName'])
+        @tenders = @tenders.map { |t| t if t.region == params[:regionName] }.compact
       elsif params['regionName'].first.present?
         @tenders = Tender.where(region: params['regionName'])
       end
 
       if @tenders.present? && params['tender_category'].present? && (params['tender_category'] != 'Все')
-        @tenders = Tender.where(id: @tenders.pluck(:id)).where(category: params['tender_category']) if params['tender_category'] != 'Все'
-      else
+        @tenders = @tenders.map { |t| t if t.category == params['tender_category'] }.compact if params['tender_category'] != 'Все'
+      elsif params['tender_category'].present? && (params['tender_category'] != 'Все')
         @tenders = Tender.where(category: params['tender_category']) if params['tender_category'] != 'Все'
       end
 
-      if @tender.present? && params[:tender_status].present? && (params[:tender_status] != 'Все')
-        @tenders = Tender.where(id: @tenders.pluck(:id)).where(status: params['tender_status']) if ( params[:tender_status] != 'Все')
-      else
-        @tenders = Tender.where(id: @tenders.pluck(:id)).where(status: params['tender_status']) if ( params[:tender_status] != 'Все')
+      if @tenders.present? && params[:tender_status].present? && (params[:tender_status] != 'Все')
+        @tenders = @tenders.map { |t| t if t.status == params['tender_status']}.compact if ( params[:tender_status] != 'Все')
       end
 
       @tenders = Tender.all if !@tenders.present?
@@ -36,9 +35,9 @@ class TendersController < ApplicationController
       @needed_ids = Item.where(tender_id: @tender_ids).pg_search(params[:productName]).pluck(:tender_id)
       if params[:stopName].present?
         @not_need_ids = Item.where(tender_id: @tender_ids).pg_search(params[:stopName]).pluck(:tender_id)
-        @tenders = @tenders.where(id: @needed_ids.reject{|x| @not_need_ids.include? x }.uniq)
+        @tenders = @tenders.where(id: ( @needed_ids.reject{|x| @not_need_ids.include? x }.uniq rescue @needed_ids ) )
       else
-        @tenders = @tenders.where(id: @needed_ids.uniq)
+        @tenders = @tenders.map { |t| t if @needed_ids.uniq.include?(t.id) }.compact
       end
       @cat_1 = []
       @cat_2 = []
@@ -58,22 +57,24 @@ class TendersController < ApplicationController
           end
       end
       gon.tenders = @tenders.map{ |tender| [tender.id.to_s, tender.name, tender_weight(tender).to_s + ' %', tender.category, tender.company.name, tender.start_date.strftime('%d, %b, %y'), tender.end_date.strftime('%d, %b, %y'), tender.item_price.to_s]}
+      @tenders_bubles = @tenders.map{ |tender| [tender.item_price.to_s, tender.start_date.strftime('%d, %b, %y'), tender.item_price, category_select(tender_weight(tender)), tender_weight(tender)]}
       gon.tenders_bubles = @tenders.map{ |tender| [tender.item_price.to_s, tender.start_date.strftime('%d, %b, %y'), tender.item_price, category_select(tender_weight(tender)), tender_weight(tender)]}
+
       gon.tenders_bubles.insert(0, ['ID', 'Дата', 'Сумма', 'Процедура', 'Доля'])
       @companies = Company.find(@tenders.pluck(:company_id))
-      gon.companies = @companies.map {|company| [company.name, @tenders.where(company_id: company.id).count, average_in_month(company, @tenders, params[:dateFrom], params[:dateTo])]}
-      gon.companies_with_tenders = @companies.map { |c| [c.name, @tenders.where(company_id: c.id).count]}
+      gon.companies = @companies.map {|company| [company.name, @tenders.map { |t| t if t.company_id == company.id}.compact.count, average_in_month(company, @tenders, params[:dateFrom], params[:dateTo])]}
+      gon.companies_with_tenders = @companies.map { |c| [ c.name, @tenders.map{ |t| t if t.company_id == c.id }.compact.count ] }
       gon.cat_1 = @cat_1.count
       gon.cat_2 = @cat_2.count
       gon.cat_3 = @cat_3.count
       gon.cat_4 = @cat_4.count
+
     else
       @tenders = Tender.all.order(created_at: :desc)
       session.delete :resoult
     end
-  # rescue
-  #   @tenders = Tender.all.order(created_at: :desc)
-  #   session.delete :resoult
+
+    hight_charts( @cat_1, @cat_2, @cat_3, @cat_4 )
   end
 
   def index2
@@ -94,6 +95,67 @@ class TendersController < ApplicationController
   end
 
   private
+
+  def hight_charts( cat_1 = nil, cat_2 = nil, cat_3 = nil, cat_4 = nil )
+    @charts = LazyHighCharts::HighChart.new('graph') do |f|
+      # f.title(text: "Распределение тендеров")
+      f.plotOptions(series: {dataLabels: {enabled: true ,format: '{point.y}', style: { color: 'black', fontSize: "8px"} }, point: { events: { click: "click_function"} }})
+      f.series(name: "категория 1 (75-100%)", color: 'rgba(255, 255, 0, 0.4)',
+        yAxis: 0,tooltip: {
+                  useHTML: true,
+                  headerFormat: '<table>',
+                  pointFormat: '<tr><th colspan="2"><h3>{point.y}</h3></th></tr>'+ '<br>' +
+                      '<tr><th> Дата:</th><td>{point.date}</td></tr>' +'<br>' +
+                      '<tr><th>Сумма:</th><td>{point.y}</td></tr>' +'<br>' +
+                      '<tr><th>Доля:</th><td>{point.z}%</td></tr>',
+                  footerFormat: '</table>',
+                  followPointer: true }, data: cat_1.map { |result| {id: result.id.to_s , x: result.start_date.utc.to_i, y: result.item_price.to_f, z: tender_weight( result ) , name: result.name, date: result.start_date.to_date}}
+      ) if cat_1.present?
+      f.series(name: "категория 2 (50-75%)", color: 'rgba(255, 0, 0, 0.4)',
+        yAxis: 0,tooltip: {
+                  useHTML: true,
+                  headerFormat: '<table>',
+                  pointFormat: '<tr><th colspan="2"><h3>{point.y}</h3></th></tr>'+ '<br>' +
+                      '<tr><th> Дата:</th><td>{point.date}</td></tr>' +'<br>' +
+                      '<tr><th>Сумма:</th><td>{point.y}</td></tr>' +'<br>' +
+                      '<tr><th>Доля:</th><td>{point.z}%</td></tr>'},
+                  footerFormat: '</table>', data: cat_2.map { |result| {id: result.id.to_s , x: result.start_date.utc.to_i, y: result.item_price.to_f, z: tender_weight( result ) , name: result.name, date: result.start_date.to_date}}
+      ) if cat_2.present?
+      f.series(name: "категория 3 (25-50%)", color: 'rgba(33, 193, 58, 0.4)',
+        yAxis: 0,tooltip: {
+                  useHTML: true,
+                  headerFormat: '<table>',
+                  pointFormat: '<tr><th colspan="2"><h3>{point.y}</h3></th></tr>'+ '<br>' +
+                      '<tr><th> Дата:</th><td>{point.date}</td></tr>' +'<br>' +
+                      '<tr><th>Сумма:</th><td>{point.y}</td></tr>' +'<br>' +
+                      '<tr><th>Доля:</th><td>{point.z}%</td></tr>',
+                  footerFormat: '</table>'}, data: cat_3.map { |result| {id: result.id.to_s , x: result.start_date.utc.to_i, y: result.item_price.to_f, z: tender_weight( result ) , name: result.name, date: result.start_date.to_date}}
+      ) if cat_3.present?
+      f.series(name: "категория 4 (0-25%)", color: 'rgba(43, 0, 251, 0.5)',
+        yAxis: 0,tooltip: {
+                  useHTML: true,
+                  headerFormat: '<table>',
+                  pointFormat: '<tr><th colspan="2"><h3>{point.y}</h3></th></tr>'+ '<br>' +
+                      '<tr><th> Дата:</th><td>{point.date}</td></tr>' +'<br>' +
+                      '<tr><th>Сумма:</th><td>{point.y}</td></tr>' +'<br>' +
+                      '<tr><th>Доля:</th><td>{point.z}%</td></tr>',
+                  footerFormat: '</table>'}, data: cat_4.map { |result| {id: result.id.to_s , x: result.start_date.utc.to_i, y: result.item_price.to_f, z: tender_weight( result ) , name: result.name, date: result.start_date.to_date}}
+      ) if cat_4.present?
+      f.yAxis [
+        {title: {text: "Цена контракта, млн. руб.", margin: 10} }
+
+      ]
+      f.xAxis [{title: {text: "Дата, дни"}}, type: 'datetime',
+        dateTimeLabelFormats: {second: '%l:%M:%S %p',
+                               minute: '%l:%M %p',
+                               hour: '%l:%M %p',
+                               day: '%e. %b', week: '%e. %b',
+                               month: '%b \'%y', year: '%Y'}]
+      f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
+      f.chart({defaultSeriesType: "bubble",plotBorderWidth: 1, zoomType: 'xy'})
+      f.colors(["#90ed6d", "#f7a34c", "#8085e8", "#f15c79"])
+    end
+  end
 
   def check_filter_request
     return true if params[:query] || params[:start_date] || params[:end_date]
@@ -118,7 +180,7 @@ class TendersController < ApplicationController
     to_date = tenders.order(end_date: :desc).first.end_date.to_datetime unless to_date.present?
 
     while current_date < to_date.to_date do
-      counts << tenders.where(company_id: company.id).where('end_date <= ?', to_date.to_date).count
+      counts << tenders.map { |t| t if ( ( t.company_id == company.id ) && ( t.end_date <= to_date.to_date ) ) }.compact.count
       current_date = current_date + 30
     end
     return counts.inject{ |sum, el| sum + el }.to_f / counts.size

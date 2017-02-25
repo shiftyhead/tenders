@@ -15,6 +15,9 @@
 //= require 3rd-party/jqueryvalidate/jquery.validate.js
 //= require 3rd-party/datetimepicker/jquery.datetimepicker.full.js
 //= require 3rd-party/circleProgressJQuery.js
+//= require highcharts/highcharts
+//= require highcharts/highcharts-more
+//= require highcharts/highstock
 //= require moment
 
 function additionalField() {
@@ -287,27 +290,6 @@ function drawBubbleChart() {
     tenders_bubles[i][1] = new Date(tenders_bubles[i][1])
     i++
   }
-  console.log(tenders_bubles);
-  var dataForBubble = google.visualization.arrayToDataTable(
-    tenders_bubles
-  )
-  // ['134569', new Date(2013, 4, 13), 1000500, 'Запрос цен', 14]
-
-  var optionsBubble = {
-    hAxis: {
-      title: 'Дата, дни',
-      format: 'M'
-    },
-    vAxis: { title: 'Цена контракта, млн. руб.', },
-    bubble: {
-      textStyle: {
-        fontSize: 11
-      }
-    },
-    colorAxis: { colors: ['white', 'black', 'green', 'red'], },
-    legend: { position: 'none', },
-    chartArea: { left: 50, top: 10, width: '80%', height: '80%' }
-  };
 
   var cssClassNames = {
     tableRow: 'x-table__row table_in',
@@ -327,22 +309,15 @@ function drawBubbleChart() {
   var table = new google.visualization.Table(document.getElementById('table_div'));
   table.draw(dataForTable, optionsTable);
 
-  var bubble = new google.visualization.BubbleChart(document.getElementById('bubble_div'));
-  bubble.draw(dataForBubble, optionsBubble);
-
   var rows = [].slice.call(document.querySelectorAll('.x-table__row'));
 
   var rows = [].slice.call(document.querySelectorAll('.x-table__row'));
-    // rows.forEach(function(item, index) {
-    //   if (index === 2) {
-    //     item.classList.add('is-active');
-    //     console.log(item);
-    //   }
-    // })
+
   $('.x-table__row').on('click', function(){
     $('#_tender_id').val($(this).find('.x-table__cell:first').html());
     $('#_tender_ves').val($(this).find('.x-table__cell:nth-child(3)').html());
   });
+
   $('#go-next').on('click', function(){
     $.get("/tenders/tender_details",
       {
@@ -369,7 +344,7 @@ function drawBubbleChart() {
   checkChoice()
 
   google.visualization.events.addListener(table, 'select', function() {
-    bubble.setSelection(table.getSelection())
+    // bubble.setSelection(table.getSelection())
     var currentRowIndex = table.getSelection()
 
     // номер строки таблицы (индекс), по которой было совершено действие
@@ -381,16 +356,6 @@ function drawBubbleChart() {
 
   });
 
-  google.visualization.events.addListener(bubble, 'select', function() {
-    table.setSelection(bubble.getSelection());
-    // console.log(bubble.getSelection()[0].row);
-    // $('tbody .x-table__row:nth-child(1)').find('.x-table__cell:nth-child(1)').html()
-    var _this = $('.google-visualization-table-tr-sel');
-      $('#_tender_id').val(_this.find('.x-table__cell:first').html());
-      $('#_tender_ves').val(_this.find('.x-table__cell:nth-child(3)').html());
-      checkChoice()
-    // console.log(table.setSelection(bubble.getSelection()));
-  });
 }
 
 function collapseSettings() {
@@ -429,6 +394,14 @@ $(document).ready(function() {
     google.charts.setOnLoadCallback(drawPieChartTwo)
   }
 });
+
+function circleOnClick(circle) {
+  $('#_tender_id').val(circle.attr('id'));
+  $('#_tender_ves').val(circle.attr('z'));
+  $('#go-next').show();
+  $('.x-lots').hide()
+  $('.to_hide').hide()
+}
 
 function validationForm() {
   $(".x-form").validate({

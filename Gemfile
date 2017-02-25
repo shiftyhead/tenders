@@ -20,6 +20,9 @@ gem 'turbolinks', '~> 5'
 gem 'gon', '~> 6.0', '>= 6.0.1'
 gem 'jbuilder', '~> 2.5'
 gem 'russian', '~> 0.6.0'
+# gem 'fusioncharts-rails'
+gem "highcharts-rails"
+gem 'lazy_high_charts'
 
 group :development, :test do
   gem 'byebug', platform: :mri
