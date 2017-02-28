@@ -2,14 +2,17 @@
   .x-wrapper__inner
     = render  'shared/logo'
     = render  'shared/settings'
-    - unless session[:resoult].present?
-      = render  'shared/step1'
-    - if session[:resoult].present?
-      = render 'result'
+    - if @tenders.any?
+      - unless session[:resoult].present?
+        = render  'shared/step1'
+      - if session[:resoult].present?
+        = render 'result'
+    - else
+      = render 'no_result'
     = render  'shared/footer'
 
 .span12
-  - if @charts.present?
+  - if @charts.present? && @tenders.any?
     = high_chart("some_id1", @charts ) do |c|
       = raw "options.plotOptions.series.point.events.click = function() { circleOnClick($(this)) }"
 

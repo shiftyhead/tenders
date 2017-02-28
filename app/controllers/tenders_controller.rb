@@ -35,7 +35,8 @@ class TendersController < ApplicationController
       @needed_ids = Item.where(tender_id: @tender_ids).pg_search(params[:productName]).pluck(:tender_id)
       if params[:stopName].present?
         @not_need_ids = Item.where(tender_id: @tender_ids).pg_search(params[:stopName]).pluck(:tender_id)
-        @tenders = @tenders.where(id: ( @needed_ids.reject{|x| @not_need_ids.include? x }.uniq rescue @needed_ids ) )
+        in_array = @needed_ids.reject{|x| @not_need_ids.include? x }.uniq rescue @needed_ids
+        @tenders = @tenders.select { |t| t.id.in? in_array }
       else
         @tenders = @tenders.map { |t| t if @needed_ids.uniq.include?(t.id) }.compact
       end
