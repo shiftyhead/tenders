@@ -1,10 +1,12 @@
 require 'date'
 class TendersController < ApplicationController
   def index
-    if params[:regionName].present?
+    begin
       session[:resoult] = "resoult"
 
       @tenders = Tender.where('start_date >= ?', params[:dateFrom].to_datetime) if params[:dateFrom].present?
+
+      raise if !@tenders.any?
 
       if @tenders.present? && params['dateTo'].present?
         @tenders = @tenders.map { |t| t if t.end_date <= params[:dateTo].to_datetime }.compact
@@ -28,8 +30,6 @@ class TendersController < ApplicationController
         @tenders = @tenders.map { |t| t if t.status == params['tender_status']}.compact if ( params[:tender_status] != 'Все')
       end
 
-      @tenders = Tender.all if !@tenders.present?
-
       @tender_ids = @tenders.pluck(:id)
 
       @needed_ids = Item.where(tender_id: @tender_ids).pg_search(params[:productName]).pluck(:tender_id)
@@ -40,6 +40,7 @@ class TendersController < ApplicationController
       else
         @tenders = @tenders.map { |t| t if @needed_ids.uniq.include?(t.id) }.compact
       end
+
       @cat_1 = []
       @cat_2 = []
       @cat_3 = []
@@ -70,8 +71,8 @@ class TendersController < ApplicationController
       gon.cat_3 = @cat_3.count
       gon.cat_4 = @cat_4.count
 
-    else
-      @tenders = Tender.all.order(created_at: :desc)
+    rescue
+      @tenders = []
       session.delete :resoult
     end
 
