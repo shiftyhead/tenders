@@ -133,21 +133,15 @@
 ###
 require 'csv'
 
-csv_text = File.read('companies.csv')
-csv = CSV.parse(csv_text, :headers => true)
-csv.each do |row|
+CSV.foreach('companies.csv', col_sep: ';', headers: true ) do |row|
   Company.create!(row.to_hash)
 end
 
 
-csv_text = File.read('tenders.csv')
-csv = CSV.parse(csv_text, :headers => true)
-csv.each do |row|
+CSV.foreach('tenders.csv', col_sep: ';', headers: true ) do |row|
   Tender.create!(row.to_hash)
 end
 
-csv_text = File.read('items.csv')
-csv = CSV.parse(csv_text, :headers => true)
-csv.each do |row|
+CSV.foreach('items.csv', col_sep: ';', headers: true ) do |row|
   Item.create!(row.to_hash)
 end
