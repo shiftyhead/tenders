@@ -175,10 +175,9 @@ class TendersController < ApplicationController
     if from_date.present?
       current_date = from_date.to_date
     else
-      current_date = tenders.order(start_date: :asc).first.start_date.to_datetime
+      current_date = tenders.sort_by(&:start_date).first.start_date.to_datetime
     end
-
-    to_date = tenders.order(end_date: :desc).first.end_date.to_datetime unless to_date.present?
+    to_date = tenders.sort_by(&:start_date).first.end_date.to_datetime unless to_date.present?
 
     while current_date < to_date.to_date do
       counts << tenders.map { |t| t if ( ( t.company_id == company.id ) && ( t.end_date <= to_date.to_date ) ) }.compact.count
