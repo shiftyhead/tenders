@@ -111,7 +111,7 @@ class TendersController < ApplicationController
                       '<tr><th>Сумма:</th><td>{point.y}</td></tr>' +'<br>' +
                       '<tr><th>Доля:</th><td>{point.z}%</td></tr>',
                   footerFormat: '</table>',
-                  followPointer: true }, data: cat_1.map { |result| {id: result.id.to_s , x: result.start_date.utc.to_i, y: result.item_price.to_f, z: tender_weight( result ) , name: result.name, date: result.start_date.to_date}}
+                  followPointer: true }, data: cat_1.map { |result| {id: result.id.to_s , x: result.start_date.utc.to_i*1000, y: result.item_price.to_f, z: tender_weight( result ) , name: result.name, date: result.start_date.to_date}}
       ) if cat_1.present?
       f.series(name: "категория 2 (50-75%)", color: 'rgba(255, 0, 0, 0.4)',
         yAxis: 0,tooltip: {
@@ -121,7 +121,7 @@ class TendersController < ApplicationController
                       '<tr><th> Дата:</th><td>{point.date}</td></tr>' +'<br>' +
                       '<tr><th>Сумма:</th><td>{point.y}</td></tr>' +'<br>' +
                       '<tr><th>Доля:</th><td>{point.z}%</td></tr>'},
-                  footerFormat: '</table>', data: cat_2.map { |result| {id: result.id.to_s , x: result.start_date.utc.to_i, y: result.item_price.to_f, z: tender_weight( result ) , name: result.name, date: result.start_date.to_date}}
+                  footerFormat: '</table>', data: cat_2.map { |result| {id: result.id.to_s , x: result.start_date.utc.to_i*1000, y: result.item_price.to_f, z: tender_weight( result ) , name: result.name, date: result.start_date.to_date}}
       ) if cat_2.present?
       f.series(name: "категория 3 (25-50%)", color: 'rgba(33, 193, 58, 0.4)',
         yAxis: 0,tooltip: {
@@ -131,7 +131,7 @@ class TendersController < ApplicationController
                       '<tr><th> Дата:</th><td>{point.date}</td></tr>' +'<br>' +
                       '<tr><th>Сумма:</th><td>{point.y}</td></tr>' +'<br>' +
                       '<tr><th>Доля:</th><td>{point.z}%</td></tr>',
-                  footerFormat: '</table>'}, data: cat_3.map { |result| {id: result.id.to_s , x: result.start_date.utc.to_i, y: result.item_price.to_f, z: tender_weight( result ) , name: result.name, date: result.start_date.to_date}}
+                  footerFormat: '</table>'}, data: cat_3.map { |result| {id: result.id.to_s , x: result.start_date.utc.to_i*1000, y: result.item_price.to_f, z: tender_weight( result ) , name: result.name, date: result.start_date.to_date}}
       ) if cat_3.present?
       f.series(name: "категория 4 (0-25%)", color: 'rgba(43, 0, 251, 0.5)',
         yAxis: 0,tooltip: {
@@ -141,18 +141,17 @@ class TendersController < ApplicationController
                       '<tr><th> Дата:</th><td>{point.date}</td></tr>' +'<br>' +
                       '<tr><th>Сумма:</th><td>{point.y}</td></tr>' +'<br>' +
                       '<tr><th>Доля:</th><td>{point.z}%</td></tr>',
-                  footerFormat: '</table>'}, data: cat_4.map { |result| {id: result.id.to_s , x: result.start_date.utc.to_i, y: result.item_price.to_f, z: tender_weight( result ) , name: result.name, date: result.start_date.to_date}}
+                  footerFormat: '</table>'}, data: cat_4.map { |result| {id: result.id.to_s , x:  result.start_date.utc.to_i*1000, y: result.item_price.to_f, z: tender_weight( result ) , name: result.name, date: result.start_date.to_date}}
       ) if cat_4.present?
       f.yAxis [
         {title: {text: "Цена контракта, млн. руб.", margin: 10} }
 
       ]
-      f.xAxis [{title: {text: "Дата, дни"}}, type: 'datetime',
-        dateTimeLabelFormats: {second: '%l:%M:%S %p',
-                               minute: '%l:%M %p',
-                               hour: '%l:%M %p',
+
+      f.xAxis(type: 'datetime',
+        dateTimeLabelFormats: {
                                day: '%e. %b', week: '%e. %b',
-                               month: '%b \'%y', year: '%Y'}]
+                               month: '%b \'%y', year: '%Y'})
       f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
       f.chart({defaultSeriesType: "bubble",plotBorderWidth: 1, zoomType: 'xy'})
       f.colors(["#90ed6d", "#f7a34c", "#8085e8", "#f15c79"])
