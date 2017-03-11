@@ -7,16 +7,17 @@ set :repo_url, 'git@github.com:som4ik/tenders.git'
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
-role :app, %w{139.59.14.152}
-role :web, %w{139.59.14.152}
-role :db,  %w{139.59.14.152}
+role :app, %w{104.236.44.207}
+role :web, %w{104.236.44.207}
+role :db,  %w{104.236.44.207}
 # Default deploy_to directory is /var/www/my_app_name
 # set :deploy_to, '/var/www/my_app_name'
 set :scm, :git
-
-set :rvm_type, :user                     # Defaults to: :auto
-set :rvm_ruby_version, '2.3.1'      # Defaults to: 'default'
-set :rvm_custom_path, '~/.rvm'  # only needed if not detected
+set :rbenv_type, :user # or :system, depends on your rbenv setup
+set :rbenv_ruby, '2.4.0'
+# set :rvm_type, :user                     # Defaults to: :auto
+# set :rvm_ruby_version, '2.3.1'      # Defaults to: 'default'
+# set :rvm_custom_path, '~/.rvm'  # only needed if not detected
 
 # Default value for :format is :pretty
 # set :format, :pretty
@@ -32,7 +33,7 @@ set :default_stage, 'production'
 
 # Default value for :pty is false
 # set :pty, true
-
+set :rvm_bin_path, "$HOME/bin"
 # Default value for :linked_files is []
 set :linked_files, %w[config/database.yml config/secrets.yml]
 
