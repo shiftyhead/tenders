@@ -13,12 +13,12 @@
 //= require 3rd-party/jquery/jquery-3.1.0.min.js
 //= require 3rd-party/jquery/jquery-ui-1.8.min.js
 //= require 3rd-party/jqueryvalidate/jquery.validate.js
-//= require moment
-//= require bootstrap-datetimepicker
+//= require 3rd-party/datetimepicker/jquery.datetimepicker.full.js
 //= require 3rd-party/circleProgressJQuery.js
 //= require highcharts/highcharts
 //= require highcharts/highcharts-more
-//= require highcharts/highstock
+
+//= require moment
 
 function additionalField() {
   $('.js-add').on('click', function() {
