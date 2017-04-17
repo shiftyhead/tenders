@@ -1,5 +1,5 @@
 # config valid only for current version of Capistrano
-lock '3.5.0'
+lock '3.8.0'
 
 set :application, 'tenders'
 set :repo_url, 'git@github.com:som4ik/tenders.git'
