@@ -75,6 +75,14 @@ namespace :deploy do
     invoke 'deploy:start'
   end
 
+  task :seed_csv do
+    on roles(:app) do
+      within release_path do
+    #   execute :rake, 'db:seed'
+        execute :rake, 'db:seed', "RAILS_ENV=production"
+      end
+    end
+  end
   # after "deploy:updated", "deploy:assets"
   after 'deploy:publishing', 'deploy:restart'
   # after :restart, :clear_cache do
