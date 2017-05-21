@@ -6,8 +6,6 @@ class TendersController < ApplicationController
 
       @tenders = Tender.where('start_date >= ?', params[:dateFrom].to_datetime) if params[:dateFrom].present?
 
-      raise if !@tenders.any?
-
       if @tenders.present? && params['dateTo'].present?
         @tenders = @tenders.map { |t| t if t.end_date <= params[:dateTo].to_datetime }.compact
       elsif params['dateTo'].present?
@@ -30,15 +28,26 @@ class TendersController < ApplicationController
         @tenders = @tenders.map { |t| t if t.status == params['tender_status']}.compact if ( params[:tender_status] != 'Все')
       end
 
-      @tender_ids = @tenders.pluck(:id)
+      @tender_ids = @tenders.pluck(:id) if @tenders.present?
 
-      @needed_ids = Item.where(tender_id: @tender_ids).pg_search(params[:productName]).pluck(:tender_id)
-      if params[:stopName].present?
-        @not_need_ids = Item.where(tender_id: @tender_ids).pg_search(params[:stopName]).pluck(:tender_id)
-        in_array = @needed_ids.reject{|x| @not_need_ids.include? x }.uniq rescue @needed_ids
-        @tenders = @tenders.select { |t| t.id.in? in_array }
-      else
-        @tenders = @tenders.map { |t| t if @needed_ids.uniq.include?(t.id) }.compact
+      if @tender_ids.present?
+        @needed_ids = Item.where(tender_id: @tender_ids).pg_search(params[:productName]).pluck(:tender_id)
+        if params[:stopName].present?
+          @not_need_ids = Item.where(tender_id: @tender_ids).pg_search(params[:stopName]).pluck(:tender_id)
+          in_array = @needed_ids.reject{|x| @not_need_ids.include? x }.uniq rescue @needed_ids
+          @tenders = @tenders.select { |t| t.id.in? in_array }
+        else
+          @tenders = @tenders.map { |t| t if @needed_ids.uniq.include?(t.id) }.compact
+        end
+      elsif params[:productName].present?
+        @needed_ids = Item.pg_search(params[:productName]).pluck(:tender_id)
+        if params[:stopName].present?
+          @not_need_ids = Item.pg_search(params[:stopName]).pluck(:tender_id)
+          in_array = @needed_ids.reject{|x| @not_need_ids.include? x }.uniq rescue @needed_ids
+          @tenders = Tender.where(id: in_array )
+        else
+          @tenders = Tender.where(id: @needed_ids.uniq )
+        end
       end
 
       @cat_1 = []

@@ -19,7 +19,7 @@ require 'capistrano/rails'
 require 'capistrano/rbenv'
 # require 'capistrano/chruby'
 require 'capistrano/rails/assets'
-require 'capistrano/rails/migrations'
+# require 'capistrano/rails/migrations'
 require 'capistrano3/unicorn'
 # require 'capistrano/puma'
 
